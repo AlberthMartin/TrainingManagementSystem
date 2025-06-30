@@ -28,8 +28,9 @@ const exerciseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-})
+    }, {
+        timestamps: true
+    })
 
 const Exercise = mongoose.model("Exercise", exerciseSchema)
-
 export default Exercise

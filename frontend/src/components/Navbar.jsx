@@ -1,7 +1,7 @@
 import React from 'react'
-import { Container, Flex, Text, HStack, IconButton, Button, Box } from "@chakra-ui/react"
+import { Container, Flex, Text, VStack, IconButton, Button, Box,Avatar } from "@chakra-ui/react"
 import {Link} from "react-router-dom"
-import { SquarePlus, Moon, Sun, Dumbbell } from 'lucide-react';
+import { SquarePlus, Moon, Sun, Dumbbell, LogOut, Menu, House, Folder, History } from 'lucide-react';
 import { useColorMode } from "@/components/ui/color-mode"
 import { useColorModeValue } from './ui/color-mode';
 
@@ -12,45 +12,123 @@ const Navbar = () => {
     const textColor = useColorModeValue('gray.800', 'whiteAlpha.900')
 
   return (
-    <Box bg={bg} shadow="sm">
-    <Container maxW ={"container.xl"} py={4}>
-        <Flex
-        align={"center"}
-        justify={"space-between"}
-        wrap="wrap"
-        gap={4}
-        px={4}
-        flexDir={{
-            base: "column",
-            sm:"row"
-        }}
-        >
-        <Text
-        fontSize="xl"
-        fontWeight="bold"
-        color={textColor}
-        textAlign={{ base: 'center', sm: 'left' }}
-        >
-            <Link to={"/"} ><Dumbbell size="28"/></Link>
-    
-        </Text>
+    <Box
+      position="fixed"
+      top="0"
+      left="0"
+      h="100vh"
+      w="20"
+      bg={bg}
+      shadow="md"
+      zIndex="1000"
+    >
+      <Flex
+        direction="column"
+        justify="space-between"
+        align="center"
+        h="full"
+        py={6}
+      >
+        {/* Top Section of Navbar*/}
+        <VStack spacing={12} gap="2">
 
-        <HStack spacing={2}> 
-            <Link to={"/create"}>
-            <Button variant="outline" _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
-                <SquarePlus w={18} h={18}/>
-            </Button>
+          <Box mb="8">
+            <Link to="/">
+                <Menu size="30"/>
             </Link>
-            <Button onClick={toggleColorMode} variant="outline" _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
-                {colorMode === "light" ? <Moon size={18}/> : <Sun size={18} />}
+          </Box>
+
+          <Link to="/profile">
+            <Avatar.Root>
+                <Avatar.Fallback name="Segun Adebayo" />
+                <Avatar.Image src="https://bit.ly/sage-adebayo" />
+            </Avatar.Root>
+          </Link>
+
+          <Link to="/home">
+            <Button variant="ghost" 
+            w="full" 
+            mt="4" 
+            py="10" 
+            px="4" 
+            fontSize="xs"
+            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
+              <VStack>
+              <House size={16}/>
+                    <Text>Home</Text>
+              </VStack>
+              
             </Button>
+          </Link>
 
-        </HStack>
+          <Link to="/exercises">
+            <Button variant="ghost" 
+            w="full" 
+            py="10" 
+            px="2"  
+            fontSize="xs"
+            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
+            <VStack>
+              <Dumbbell size={16}/>
+                    <Text>Exercises</Text>
+              </VStack>
+            </Button>
+          </Link>
+
+          <Link to="/programs">
+            <Button variant="ghost" 
+            w="full" 
+            py="10" 
+            px="2"  
+            fontSize="xs"
+            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
+            <VStack>
+              <Folder size={16}/>
+                    <Text>Programs</Text>
+              </VStack>
+            </Button>
+          </Link>
+
+          <Link to="/history">
+            <Button variant="ghost" 
+            w="full" 
+            py="10" 
+            px="4"  
+            fontSize="xs"
+            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
+            <VStack>
+              <History size={16}/>
+                    <Text>History</Text>
+              </VStack>
+            </Button>
+          </Link>
+
+        </VStack>
+
         
+            
 
-        </Flex>
 
-    </Container>
+        {/* Bottom of the navbar */}
+        <VStack>
+        <Button
+          onClick={toggleColorMode}
+          variant="outline"
+          _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+        >
+          {colorMode === "light" ? <Moon size={18} /> : <Sun size={18} />}
+        </Button>
+        
+        <Button
+        variant="outline"
+        _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+        >
+            <LogOut />
+        </Button>
+
+        </VStack>
+        
+      </Flex>
     </Box>
   )
 }

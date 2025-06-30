@@ -4,6 +4,7 @@ import { Avatar, Button, ButtonGroup, IconButton, CloseButton, Dialog, Portal } 
 //Add tags for the mucsle groups worked
 export default function ExerciseListElement({exerciseName, exerciseDescription}) {
   return (
+      <>
 
       <ButtonGroup variant="outline" attached w="full">
         {/*Avatar icon */}
@@ -39,6 +40,8 @@ export default function ExerciseListElement({exerciseName, exerciseDescription})
             </Portal>
           </Dialog.Root>
         </ButtonGroup>
+
+        </>
       
   )
 }

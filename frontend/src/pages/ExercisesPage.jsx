@@ -17,19 +17,23 @@ export default function ExercisesPage() {
     }, [fetchExercises])
 
   return (
-    <Box overflowX="hidden"> 
+    <Box overflowX="hidden" ml="20"> 
+    {/*Exercise taskbar (search, create exercise) */}
+    {/*Headline */}
     <Heading fontWeight="semibold" fontSize="3xl" m="4">
         Exercises
     </Heading>
-        <Flex direction="column" gap="1" ml="4"> 
-            {exercises.map((exercise) => (
-                <ExerciseListElement 
-                key={exercise._id} 
-                exerciseName={exercise.name}
-                exerciseDescription={exercise.description}
-                />
+
+    {/**Saved exercises */}
+    <Flex direction="column" gap="1" ml="4"> 
+        {exercises.map((exercise) => (
+            <ExerciseListElement 
+            key={exercise._id} 
+            exerciseName={exercise.name}
+            exerciseDescription={exercise.description}
+            />
             ))}
-        </Flex>
+    </Flex>
     </Box>
   )
 }
