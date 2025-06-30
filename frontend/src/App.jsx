@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import { Button, ButtonGroup } from "@chakra-ui/react"
 import { Route, Routes } from 'react-router-dom'
 import ExercisesPage from './pages/ExercisesPage'
+import CreateExercisePage from './pages/CreateExercisePage'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ExercisesPage/>}/> 
         <Route path="/exercises" element={<ExercisesPage/>}/>
+        <Route path="/createExercise" element={<CreateExercisePage/>}/>
       </Routes>
     </>
   )
