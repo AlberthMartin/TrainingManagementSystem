@@ -33,9 +33,8 @@ const Navbar = () => {
         <VStack spacing={12} gap="2">
 
           <Box mb="8">
-            <Link to="/">
+            {/** TODO: Menu comes out from left with detailed navbar, component is called DRAWER */}
                 <Menu size="30"/>
-            </Link>
           </Box>
 
           <Link to="/profile">
