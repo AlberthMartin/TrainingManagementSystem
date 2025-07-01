@@ -1,15 +1,16 @@
-import { generateToken } from "../lib/utils.js"
+import { generateToken } from "../utils/generateToken.js"
+
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 import router from "../routes/auth.route.js"
 import { protectRoute } from "../middleware/auth.middleware.js"
 
 export const signup = async (req, res) => {
-    const {fullName, email, password} = req.body
+    const {name, email, password} = req.body
 
     try{
         //Check that all field are filled
-        if(!fullName || !email || !password){
+        if(!name || !email || !password){
             return res.status(400).json({message: "Fill in all the fields"})
         }
 
@@ -30,23 +31,27 @@ export const signup = async (req, res) => {
 
         //Create a new user with the hashed password
         const newUser = new User({
-            fullName: fullName,
+            name: name,
             email: email,
             password: hashedPassword,
         })
 
         if(newUser) {
-            //Generate jwt token for user
+            //Generate jwt token for user, THis user has been authenticated when it has a token
             generateToken(newUser._id, res)
 
             //save the user to the database
             await newUser.save()
 
             res.status(201).json({
-                _id: newUser._id,
-                fullName: newUser.fullName,
-                email: newUser.email,
-                profilePicture: newUser.profilePicture,
+                success: true,
+                message: "User was created successfully",
+                //Send all user info but not the password as a response
+                user:{
+                    ...newUser._doc,
+                    password: undefined 
+                }
+                
             }) 
         }else{
             res.status(400).json({message: "Invalid user data"})
@@ -77,7 +82,7 @@ export const login = async (req, res) =>{
 
         res.status(200).json({
             _id: user._id,
-            fullName: user.fullName,
+            name: user.name,
             email: user.email,
             profilePicture: user.profilePicture, token
         })

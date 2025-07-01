@@ -15,9 +15,11 @@
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^17.0.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mailtrap": "^4.1.0",
     "mongoose": "^8.16.1",
     "react-router-dom": "^7.6.3"
   },

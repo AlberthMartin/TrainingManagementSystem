@@ -4,12 +4,20 @@ import {Link} from "react-router-dom"
 import { SquarePlus, Moon, Sun, Dumbbell, LogOut, Menu, House, Folder, History } from 'lucide-react';
 import { useColorMode } from "@/components/ui/color-mode"
 import { useColorModeValue } from './ui/color-mode';
+import { useAuthStore } from '@/store/userAuth';
 
 const Navbar = () => {
     const { colorMode ,toggleColorMode } = useColorMode()
 
     const bg = useColorModeValue('gray.100', 'gray.900')
     const textColor = useColorModeValue('gray.800', 'whiteAlpha.900')
+
+    const { logout, authUser } = useAuthStore();
+    
+
+    const handleLogOut = async() =>{
+      logout()
+    }
 
   return (
     <Box
@@ -39,8 +47,8 @@ const Navbar = () => {
 
           <Link to="/profile">
             <Avatar.Root>
-                <Avatar.Fallback name="Segun Adebayo" />
-                <Avatar.Image src="https://bit.ly/sage-adebayo" />
+                <Avatar.Fallback name={authUser?.name || "User"} />
+                <Avatar.Image src={authUser?.profilePicture || ""} />
             </Avatar.Root>
           </Link>
 
@@ -119,6 +127,7 @@ const Navbar = () => {
         </Button>
         
         <Button
+        onClick={handleLogOut}
         variant="outline"
         _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
         >

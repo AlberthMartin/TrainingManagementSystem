@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
             unique: true,
         },
         
-        fullName:{
+        name:{
             type: String,
             required: true,
         },
@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "No Picture",
         },
+        lastLogin: {
+            type: Date,
+            default: Date.now
+        },
+        
     },
     { timestamps: true}
 )

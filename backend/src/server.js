@@ -1,12 +1,12 @@
 import dotenv from "dotenv"
 dotenv.config();
 import express from "express"
-import exerciseRoutes from "../routes/exercises.route.js";
-import authRoutes from "../routes/auth.route.js"
+import exerciseRoutes from "./routes/exercises.route.js";
+import authRoutes from "./routes/auth.route.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 
-import {connectDB} from "../lib/db.js"
+import {connectDB} from "./lib/db.js"
 
 
 const app = express()
