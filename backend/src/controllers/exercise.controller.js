@@ -20,7 +20,11 @@ export const createExercise = async (req, res) =>{
         return res.status(400).json({success:false, message: "Fill in all fields"})
     }
 
-    const newExercise = new Exercise(exercise)
+    const newExercise = new Exercise({
+        ...exercise,
+        //If it is created by a user it is a user specific exercise
+        createdBy: req.user._id 
+    })
 
     try{
         newExercise.save()
@@ -40,7 +44,7 @@ export const deleteExercise = async (req, res) =>{
         await Exercise.findByIdAndDelete(id)
         res.status(200).json({success: true, message: "Exersice deleted"})
     }catch(error){
-        console.error("Error in deleteExercise", error.message)
+        console.log("Error in deleteExercise", error.message)
         res.status(500).json({success: false, message: "Server Error"})
     }
 }

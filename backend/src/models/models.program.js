@@ -6,7 +6,7 @@ const programSchema = new mongoose.Schema({
         required: true
     },
     description: String,
-    //createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
     workouts: 
     [
@@ -14,12 +14,24 @@ const programSchema = new mongoose.Schema({
         workoutName: {type: String, required: true},
         exercises: [
             {
-            exercise: {type: mongoose.Schema.Types.ObjectId, ref: "Exercise"},
-            sets: Number,
-            reps: Number,
-            restSeconds: Number
+            exercise: {
+                type: mongoose.Schema.Types.ObjectId, 
+                ref: "Exercise"
+            },
+            sets: {
+                type: Number,
+                min: 1,
+            },
+            reps: {
+                type: Number,
+                min: 1,
+            },
+            restSeconds: {
+                type: Number, 
+                min: 1,
             }
-            ]
+            }
+                ]
         }
     ]}, {
         timestamps: true //CreatedAt, UpdatedAt
