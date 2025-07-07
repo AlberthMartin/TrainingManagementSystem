@@ -2,7 +2,7 @@ import React from 'react'
 import { Avatar, Button, ButtonGroup, IconButton, CloseButton, Dialog, Portal } from "@chakra-ui/react"
 
 //Add tags for the mucsle groups worked
-export default function ExerciseListElement({exerciseName, exerciseDescription}) {
+export default function ExerciseListElement({name, description}) {
   return (
       <>
 
@@ -10,7 +10,7 @@ export default function ExerciseListElement({exerciseName, exerciseDescription})
         {/*Avatar icon */}
         <IconButton aria-label="Pull up icon" w="auto">
             <Avatar.Root shape="square" >
-                <Avatar.Fallback name={exerciseName} />
+                <Avatar.Fallback name={name} />
             </Avatar.Root>
         </IconButton>
 
@@ -18,7 +18,7 @@ export default function ExerciseListElement({exerciseName, exerciseDescription})
             <Dialog.Root size="cover" placement="center" motionPreset="slide-in-bottom">
               <Dialog.Trigger asChild>
             <Button height="10" w="full" justifyContent="start" p="4" pl="6">
-                {exerciseName}
+                {name}
             </Button>
             {/**The dialog that opens when you click the exercise */}
             </Dialog.Trigger>
@@ -27,13 +27,13 @@ export default function ExerciseListElement({exerciseName, exerciseDescription})
                 <Dialog.Positioner>
                   <Dialog.Content>
                     <Dialog.Header>
-                      <Dialog.Title>{exerciseName}</Dialog.Title>
+                      <Dialog.Title>{name}</Dialog.Title>
                       <Dialog.CloseTrigger asChild>
                         <CloseButton size="sm" />
                       </Dialog.CloseTrigger>
                     </Dialog.Header>
                   <Dialog.Body>
-                    {exerciseDescription}
+                    {description}
                   </Dialog.Body>
                 </Dialog.Content>
               </Dialog.Positioner>

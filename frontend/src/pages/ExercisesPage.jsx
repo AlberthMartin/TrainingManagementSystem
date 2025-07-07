@@ -19,6 +19,8 @@ export default function ExercisesPage() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const filteredExercises = exercises.filter((exercise) => 
+      //So the .toLowerCase function waits until the exercise name is here when you add a new exercise
+      typeof exercise.name === 'string' &&
       exercise.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
     useEffect(() => {
@@ -27,9 +29,8 @@ export default function ExercisesPage() {
 
   return (
     <Box ml="20" overflowX="hidden"> 
-    {/*Exercise taskbar (search, create exercise) */}
+    
     <Stack>
-
     <Box 
     bg={TaskBarBG}
     shadow="md" 
@@ -67,8 +68,8 @@ export default function ExercisesPage() {
         {filteredExercises.map((exercise) => (
             <ExerciseListElement 
             key={exercise._id} 
-            exerciseName={exercise.name}
-            exerciseDescription={exercise.description}
+            name={exercise.name}
+            description={exercise.description}
             />
             ))}
     </Flex>

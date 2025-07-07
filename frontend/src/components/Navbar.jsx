@@ -82,7 +82,7 @@ const Navbar = () => {
             </Button>
           </Link>
 
-          <Link to="/programs">
+          <Link to="/workouts">
             <Button variant="ghost" 
             w="full" 
             py="10" 
@@ -91,7 +91,7 @@ const Navbar = () => {
             _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
             <VStack>
               <Folder size={16}/>
-                    <Text>Programs</Text>
+                    <Text>Workouts</Text>
               </VStack>
             </Button>
           </Link>

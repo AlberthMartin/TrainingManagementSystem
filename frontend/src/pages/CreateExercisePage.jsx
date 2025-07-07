@@ -7,7 +7,6 @@ import { useExerciseStore } from '@/store/exercise'
 import { useNavigate } from "react-router-dom";
 
 
-
 export default function CreateExercise() {
     const inputFieldColor = useColorModeValue("white", "gray.700")
     const textColor = useColorModeValue("black", "white")
@@ -49,7 +48,7 @@ export default function CreateExercise() {
     }
 
   return (
-    <Container maxW="md" px="4" py="4">
+    <Container maxW="md" px="4" py="4" ml="20">
       <Stack>
         <Heading>
             Create new exercise
