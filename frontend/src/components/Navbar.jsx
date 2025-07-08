@@ -1,23 +1,41 @@
-import React from 'react'
-import { Container, Flex, Text, VStack, IconButton, Button, Box,Avatar } from "@chakra-ui/react"
-import {Link} from "react-router-dom"
-import { SquarePlus, Moon, Sun, Dumbbell, LogOut, Menu, House, Folder, History } from 'lucide-react';
-import { useColorMode } from "@/components/ui/color-mode"
-import { useColorModeValue } from './ui/color-mode';
-import { useAuthStore } from '@/store/userAuth';
+import React from "react";
+import {
+  Container,
+  Flex,
+  Text,
+  VStack,
+  IconButton,
+  Button,
+  Box,
+  Avatar,
+} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import {
+  SquarePlus,
+  Moon,
+  Sun,
+  Dumbbell,
+  LogOut,
+  Menu,
+  House,
+  Folder,
+  History,
+} from "lucide-react";
+import { useColorMode } from "@/components/ui/color-mode";
+import { useColorModeValue } from "./ui/color-mode";
+import { useAuthStore } from "@/store/userAuth";
 
 const Navbar = () => {
-    const { colorMode ,toggleColorMode } = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode();
 
-    const bg = useColorModeValue('gray.100', 'gray.900')
-    const textColor = useColorModeValue('gray.800', 'whiteAlpha.900')
+  const bg = useColorModeValue("gray.100", "gray.900");
+  const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
 
-    const { logout, authUser } = useAuthStore();
-    
+  const { logout, authUser } = useAuthStore();
 
-    const handleLogOut = async() =>{
-      logout()
-    }
+  const handleLogOut = async () => {
+    logout();
+  };
 
   return (
     <Box
@@ -39,106 +57,105 @@ const Navbar = () => {
       >
         {/* Top Section of Navbar*/}
         <VStack spacing={12} gap="2">
-
           <Box mb="8">
             {/** TODO: Menu comes out from left with detailed navbar, component is called DRAWER */}
-                <Menu size="30"/>
+            <Menu size="30" />
           </Box>
 
           <Link to="/profile">
             <Avatar.Root>
-                <Avatar.Fallback name={authUser?.name || "User"} />
-                <Avatar.Image src={authUser?.profilePicture || ""} />
+              <Avatar.Fallback name={authUser?.name || "User"} />
+              <Avatar.Image src={authUser?.profilePicture || ""} />
             </Avatar.Root>
           </Link>
 
           <Link to="/home">
-            <Button variant="ghost" 
-            w="full" 
-            mt="4" 
-            py="10" 
-            px="4" 
-            fontSize="xs"
-            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
+            <Button
+              variant="ghost"
+              w="full"
+              mt="4"
+              py="10"
+              px="4"
+              fontSize="xs"
+              _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+            >
               <VStack>
-              <House size={16}/>
-                    <Text>Home</Text>
+                <House size={16} />
+                <Text>Home</Text>
               </VStack>
-              
             </Button>
           </Link>
 
           <Link to="/exercises">
-            <Button variant="ghost" 
-            w="full" 
-            py="10" 
-            px="2"  
-            fontSize="xs"
-            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
-            <VStack>
-              <Dumbbell size={16}/>
-                    <Text>Exercises</Text>
+            <Button
+              variant="ghost"
+              w="full"
+              py="10"
+              px="2"
+              fontSize="xs"
+              _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+            >
+              <VStack>
+                <Dumbbell size={16} />
+                <Text>Exercises</Text>
               </VStack>
             </Button>
           </Link>
 
           <Link to="/workouts">
-            <Button variant="ghost" 
-            w="full" 
-            py="10" 
-            px="2"  
-            fontSize="xs"
-            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
-            <VStack>
-              <Folder size={16}/>
-                    <Text>Workouts</Text>
+            <Button
+              variant="ghost"
+              w="full"
+              py="10"
+              px="2"
+              fontSize="xs"
+              _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+            >
+              <VStack>
+                <Folder size={16} />
+                <Text>Workouts</Text>
               </VStack>
             </Button>
           </Link>
 
           <Link to="/history">
-            <Button variant="ghost" 
-            w="full" 
-            py="10" 
-            px="4"  
-            fontSize="xs"
-            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}>
-            <VStack>
-              <History size={16}/>
-                    <Text>History</Text>
+            <Button
+              variant="ghost"
+              w="full"
+              py="10"
+              px="4"
+              fontSize="xs"
+              _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+            >
+              <VStack>
+                <History size={16} />
+                <Text>History</Text>
               </VStack>
             </Button>
           </Link>
-
         </VStack>
-
-        
-            
-
 
         {/* Bottom of the navbar */}
         <VStack>
-        <Button
-          onClick={toggleColorMode}
-          variant="outline"
-          _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
-        >
-          {colorMode === "light" ? <Moon size={18} /> : <Sun size={18} />}
-        </Button>
-        
-        <Button
-        onClick={handleLogOut}
-        variant="outline"
-        _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
-        >
-            <LogOut />
-        </Button>
+          <Button
+            onClick={toggleColorMode}
+            variant="outline"
+            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+          >
+            {colorMode === "light" ? <Moon size={18} /> : <Sun size={18} />}
+          </Button>
 
+          <Button
+            onClick={handleLogOut}
+            variant="outline"
+            _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+          >
+            <LogOut />
+          </Button>
         </VStack>
-        
       </Flex>
     </Box>
-  )
-}
+  );
+};
 
 export default Navbar;

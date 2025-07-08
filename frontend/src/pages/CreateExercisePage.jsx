@@ -20,6 +20,7 @@ export default function CreateExercise() {
     const {createExercise} = useExerciseStore()
 
     const handleAddExercise = async() => {
+        //TODO: Add validation
         const {success, message} = await createExercise(newExercise)
 
         if(!success) {

@@ -2,7 +2,7 @@
 //Ability to edit them and delete them
 import React, { useEffect, useState } from 'react'
 import ExerciseListElement from '@/components/ExerciseListElement'
-import { Flex, Box, Heading, Avatar, Text, HStack, Container, Button, ButtonGroup, IconButton, VStack, Stack, Input, InputGroup } from "@chakra-ui/react"
+import { Flex, Box, Heading, Avatar, Text, HStack, Container, Button, ButtonGroup, IconButton, VStack, Stack, Input, InputGroup,Spinner } from "@chakra-ui/react"
 import { useExerciseStore } from '@/store/exercise'
 import { Link } from "react-router-dom"
 import {Plus, Search} from "lucide-react"

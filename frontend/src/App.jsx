@@ -3,14 +3,14 @@ import { useState } from 'react'
 
 import Navbar from './components/Navbar'
 
-import { Button, ButtonGroup, Box, AbsoluteCenter } from "@chakra-ui/react"
+import { Button, ButtonGroup, Box, AbsoluteCenter,Spinner, Flex  } from "@chakra-ui/react"
 import { Route, Routes, Navigate } from 'react-router-dom'
 
 import ExercisesPage from './pages/ExercisesPage'
 import CreateExercisePage from './pages/CreateExercisePage'
 
 import CreateWorkoutPage from './pages/CreateWorkoutPage'
-
+import EditWorkoutPage from './pages/EditWorkoutPage'
 
 import WorkoutsPage from './pages/WorkoutsPage'
 
@@ -32,11 +32,9 @@ function App() {
 
   if(isCheckingAuth && !authUser){
     return (
-      <Box position="relative" h="full" w="full">
-        <AbsoluteCenter>
-          Loading...
-        </AbsoluteCenter>
-      </Box>
+      <Flex align="center" justify="center" height="100vh">
+        <Spinner size="xl"/>
+      </Flex>
         
     );
   }
@@ -49,16 +47,19 @@ function App() {
         <Route path="/" element={authUser ? <HomePage/> : <Navigate to="/login" />}/> 
         <Route path="/home" element={authUser ? <HomePage/> : <Navigate to="/login" />}/>
         <Route path="/profile" element={authUser ? <UserProfilePage/> : <Navigate to="/login" />}/>
-        <Route path="/exercises" element={authUser ? <ExercisesPage/> : <Navigate to="/login" />}/>
-        <Route path="/createExercise" element={authUser ? <CreateExercisePage/> : <Navigate to="/login" />}/>
-       
-        <Route path="/createWorkout" element={authUser ? <CreateWorkoutPage/> : <Navigate to="/login" />}/>
-        
-        <Route path="/workouts" element={authUser ? <WorkoutsPage/> : <Navigate to="/login" />}/>
-        
         <Route path="/history" element={authUser ? <HistoryPage/> : <Navigate to="/login" />}/>
         <Route path="/signup" element={authUser ? <Navigate to="/"/> :  <SignUpPage />}/>
         <Route path="/login" element={authUser ? <Navigate to="/"/> :  <LoginPage/>}/>
+        
+        <Route path="/exercises" element={authUser ? <ExercisesPage/> : <Navigate to="/login" />}/>
+        <Route path="/createExercise" element={authUser ? <CreateExercisePage/> : <Navigate to="/login" />}/>
+       
+        <Route path="/workouts" element={authUser ? <WorkoutsPage/> : <Navigate to="/login" />}/>
+        <Route path="/createWorkout" element={<CreateWorkoutPage/>}/>
+        <Route path="/editWorkout/:id" element={ <EditWorkoutPage/>}/>
+        
+        
+    
       </Routes> 
       
     </>

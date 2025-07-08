@@ -35,6 +35,12 @@ export const createWorkout = async (req, res) => {
     if(!name || !Array.isArray(exercises)){
         return res.status(400).json({success: false, message: "Name and exercises are required"})
     }
+
+    for (const ex of exercises) {
+        if (!ex.exercise || !Array.isArray(ex.sets)) {
+          return res.status(400).json({ success: false, message: "Each exercise must have a valid ID and an array of sets" });
+        }
+      }
    
     const newWorkout = new Workout({
         name, 

@@ -1,4 +1,4 @@
-import { VStack, Container, Box, Input, Heading, Button, Stack, Text} from '@chakra-ui/react'
+import { VStack, Container, Box, Input, Heading, Button, Stack, Text, Spinner} from '@chakra-ui/react'
 import { PasswordInput } from "@/components/ui/password-input"
 import React from 'react'
 import { useColorModeValue } from '../components/ui/color-mode'
@@ -68,7 +68,7 @@ export default function SignUpPage() {
                 <Button onClick={handleLogin} disabled={isLoggingIn} mt="2">
                     {isLoggingIn ? (
                         <>
-                        Loading...
+                        <Spinner/>
                         </>
                     ) : (
                         <Text>Sign In</Text>

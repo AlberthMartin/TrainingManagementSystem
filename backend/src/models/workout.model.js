@@ -11,18 +11,30 @@ const workoutSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId, 
                 ref: "Exercise"
             },
-            sets: {
-                type: Number,
-                min: 1,
-            },
-            reps: {
-                type: Number,
-                min: 1,
-            },
-            restSeconds: {
-                type: Number,
-                min: 1,
-            },
+            //Supports different reps on different sets
+            sets: [
+                {
+                reps: {
+                    type: Number,
+                    min: 0,
+                },
+                weight: {
+                    type: Number,
+                    min: 0,
+                    default: 0,
+                },
+                restSeconds: {
+                    type: Number,
+                    min: 0,
+                    default: 90
+                },
+                //Dropset, warmup
+                setType: {
+                    type: Number,
+                    default: 1,
+                },
+            }
+            ]
         }
     ]
 }, {
