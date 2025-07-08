@@ -52,11 +52,11 @@ export const useWorkoutStore = create(( set ) => ({
         try{
             const res = await fetch(`/api/workouts/${id}`)
             if(!res.ok) throw new Error("Failed to fetch workout")
-            const data = await res.json();
+            const json = await res.json();
             
-            set({currentWorkout: data})
+            //set({currentWorkout: json})
 
-            return{success: true, workout: data}
+            return{success: true, workout: json.data}
         }catch(error) {
             return {
                 success: false,

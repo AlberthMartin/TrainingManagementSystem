@@ -7,7 +7,7 @@ import { useExerciseStore } from '@/store/exercise'
 import { useNavigate } from "react-router-dom";
 
 
-export default function CreateExercise() {
+export default function CreateExercisePage() {
     const inputFieldColor = useColorModeValue("white", "gray.700")
     const textColor = useColorModeValue("black", "white")
     const navigate = useNavigate();

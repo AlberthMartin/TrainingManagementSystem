@@ -21,6 +21,7 @@ export default function WorkoutsPage() {
         {/*Top Taskbar */}
         <Box position="sticky" top="0" zIndex="sticky" bg={TaskBarBG} shadow="md" py="4">
           <Flex justify="flex-end">
+            {/*Create workout*/}
             <Link to="/createWorkout">
               <Button
                 variant="ghost"

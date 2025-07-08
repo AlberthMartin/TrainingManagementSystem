@@ -7,10 +7,8 @@ import { Button, ButtonGroup, Box, AbsoluteCenter,Spinner, Flex  } from "@chakra
 import { Route, Routes, Navigate } from 'react-router-dom'
 
 import ExercisesPage from './pages/ExercisesPage'
-import CreateExercisePage from './pages/CreateExercisePage'
 
-import CreateWorkoutPage from './pages/CreateWorkoutPage'
-import EditWorkoutPage from './pages/EditWorkoutPage'
+import CreateExercisePage from './pages/CreateExercisePage'
 
 import WorkoutsPage from './pages/WorkoutsPage'
 
@@ -22,6 +20,8 @@ import LoginPage from './pages/LoginPage'
 
 import { useAuthStore } from './store/userAuth'
 import { useEffect } from "react"
+import CreateWorkoutPage from './pages/CreateWorkoutPage'
+import EditWorkoutPage from './pages/EditWorkoutPage'
 
 function App() {
   const {authUser, checkAuth, isCheckingAuth} = useAuthStore()
@@ -56,10 +56,7 @@ function App() {
        
         <Route path="/workouts" element={authUser ? <WorkoutsPage/> : <Navigate to="/login" />}/>
         <Route path="/createWorkout" element={<CreateWorkoutPage/>}/>
-        <Route path="/editWorkout/:id" element={ <EditWorkoutPage/>}/>
-        
-        
-    
+        <Route path="/editWorkout/:workoutId" element={ <EditWorkoutPage/>}/>
       </Routes> 
       
     </>
