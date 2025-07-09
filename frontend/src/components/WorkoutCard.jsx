@@ -1,29 +1,50 @@
-import { Avatar, Button, Card, For, Stack } from "@chakra-ui/react";
+import { Button, Card } from "@chakra-ui/react";
 import {
   Text,
   Flex,
   Box,
-  ButtonGroup,
-  IconButton,
   CloseButton,
   Dialog,
   Portal,
-  Menu
+  Menu,
 } from "@chakra-ui/react";
 import ExerciseTable from "./ExerciseTable";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useWorkoutStore } from "@/store/workout";
+import { useState } from "react";
 
 import { useColorModeValue } from "../components/ui/color-mode";
 import { EllipsisVertical } from "lucide-react";
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 
 export default function WorkoutCard({ name, exercises = [], id }) {
   const secondaryTextColor = useColorModeValue("gray.700", "gray.400");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { deleteWorkout } = useWorkoutStore();
+
+  const handleDeleteWorkout = async (id) => {
+    try{
+      await deleteWorkout(id)
+      console.log(`Workout ${id} deleted successfully`);
+    }catch(err){
+      console.error("Error in handleDeleteWorkout", err);
+    }
+  };
   return (
     <Box position="relative">
+      {/*The Delet confirmation alert when trying to delete a workout */}
+      <DeleteConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onDelete={() => handleDeleteWorkout(id)}
+        itemToBeDeleted={name}
+      />
       <Card.Root width="320px" height="200px" variant="outline">
         {/*Menu  */}
         <Box position="absolute" top="2" right="2" zIndex="1" p="2">
+          {/*Menu on the card */}
           <Menu.Root>
             <Menu.Trigger asChild>
               <Button variant="ghost" size="sm">
@@ -33,11 +54,16 @@ export default function WorkoutCard({ name, exercises = [], id }) {
             <Portal>
               <Menu.Positioner>
                 <Menu.Content>
-                  <Menu.Item value="rename">Edit</Menu.Item>
+                  {/*Edit */}
+                  <Link to={`/editWorkout/${id}`}>
+                    <Menu.Item value="rename">Edit</Menu.Item>
+                  </Link>
                   <Menu.Item
                     value="delete"
                     color="fg.error"
                     _hover={{ bg: "bg.error", color: "fg.error" }}
+                    onClick={() => setIsDialogOpen(true)}
+                    colorScheme="red"
                   >
                     Delete...
                   </Menu.Item>
@@ -49,6 +75,8 @@ export default function WorkoutCard({ name, exercises = [], id }) {
 
         <Card.Body gap="2">
           <Card.Title mb="2">{name} </Card.Title>
+
+          {/*The exercises in the workout listed ..., ... */}
           <Text fontSize="sm" color={secondaryTextColor}>
             {exercises?.length > 0
               ? exercises.map((e) => e.exercise?.name).join(", ") + "."

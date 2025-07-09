@@ -15,11 +15,23 @@ export default function WorkoutsPage() {
   useEffect(() => {
     fetchWorkouts();
   }, [fetchWorkouts]);
+
+  useEffect(() => {
+    workouts.forEach((w) => console.log("Workout key:", w._id));
+  }, [workouts]);
+
   return (
     <Box ml="20">
       <Stack>
         {/*Top Taskbar */}
-        <Box position="sticky" top="0" zIndex="sticky" bg={TaskBarBG} shadow="md" py="4">
+        <Box
+          position="sticky"
+          top="0"
+          zIndex="sticky"
+          bg={TaskBarBG}
+          shadow="md"
+          py="4"
+        >
           <Flex justify="flex-end">
             {/*Create workout*/}
             <Link to="/createWorkout">
@@ -32,7 +44,6 @@ export default function WorkoutsPage() {
               >
                 <Plus size={16} />
                 Create New Workout
-                
               </Button>
             </Link>
           </Flex>
@@ -42,10 +53,11 @@ export default function WorkoutsPage() {
           Workouts
         </Heading>
 
+        {/*Workout cards */}
         <Flex wrap="wrap" gap="4" mx="8">
           {workouts.map((workout, i) => (
             <WorkoutCard
-              key={workout._id}
+              key={workout._id || i}
               id={workout._id}
               name={workout.name}
               exercises={workout.exercises}

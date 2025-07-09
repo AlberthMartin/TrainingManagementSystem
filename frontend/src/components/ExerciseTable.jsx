@@ -15,7 +15,8 @@ export default function ExerciseTable({exercises}) {
       <Table.Body>
         {exercises.map((exercise, exerciseIndex) => 
           exercise.sets.map((set, setIndex) => (
-            <Table.Row key={`${exerciseIndex}-${setIndex}`}>
+            
+            <Table.Row  key={`exercise-${exercise.exercise?._id ?? exerciseIndex}-set-${setIndex}`}>
               {setIndex === 0 && (
                 <Table.Cell rowSpan={exercise.sets.length} borderBottom="1px solid" borderX="1px solid">
                   {exercise.exercise.name}
