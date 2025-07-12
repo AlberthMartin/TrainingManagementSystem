@@ -18,6 +18,7 @@ import {
   Input,
   InputGroup,
   Spinner,
+  SimpleGrid
 } from "@chakra-ui/react";
 import { useExerciseStore } from "@/store/exercise";
 import { Link } from "react-router-dom";
@@ -76,7 +77,7 @@ export default function ExercisesPage() {
         </Heading>
 
         {/**Saved exercises with search function*/}
-        <Flex direction="column" gap="2" ml="6">
+        <SimpleGrid columns={1} p="4" gap="1">
           {filteredExercises.map((exercise) => (
             <ExerciseListElement
               key={exercise._id}
@@ -84,7 +85,7 @@ export default function ExercisesPage() {
               description={exercise.description}
             />
           ))}
-        </Flex>
+        </SimpleGrid>
       </Stack>
     </Box>
   );

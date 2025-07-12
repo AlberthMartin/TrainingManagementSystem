@@ -7,12 +7,13 @@ import {
   CloseButton,
   Dialog,
   Portal,
+  Box
 } from "@chakra-ui/react";
 
 //Add tags for the mucsle groups worked
 export default function ExerciseListElement({ name, description }) {
   return (
-    <>
+    <Box>
       <ButtonGroup variant="outline" attached w="full">
         {/*Avatar icon */}
         <IconButton aria-label="exercise_icon" w="auto">
@@ -49,6 +50,6 @@ export default function ExerciseListElement({ name, description }) {
           </Portal>
         </Dialog.Root>
       </ButtonGroup>
-    </>
+    </Box>
   );
 }

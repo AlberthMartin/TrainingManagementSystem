@@ -14,7 +14,12 @@ export const getExercises = async (req, res) =>{
 
     try{
         //Mongoose finds all the exercises
-        const exercises = await Exercise.find({})
+        const exercises = await Exercise.find({
+            $or: [
+                { createdBy: req.user._id }, // user-created exercise
+                { createdBy: null }          // default/global exercise
+              ]
+        })
         //returns an array of all the found exercises as JSON
         res.status(200).json({
             success: true, 
@@ -42,7 +47,8 @@ export const createExercise = async (req, res) =>{
     //Creates the exercise with mongoose
     const newExercise = new Exercise({
         name: exercise.name,
-        description: exercise.description
+        description: exercise.description,
+        createdBy: req.user._id
     })
 
     try{
