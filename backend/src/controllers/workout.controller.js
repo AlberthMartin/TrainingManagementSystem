@@ -6,7 +6,12 @@ import mongoose from "mongoose";
 
 export const getWorkouts = async (req, res) => {
     try{
-        const workouts = await Workout.find({}).populate("exercises.exercise")
+        const workouts = await Workout.find({
+            $or: [
+                { user: req.user._id }, // user-created workouts
+                { user: null }          // default/global workouts
+              ]
+        }).populate("exercises.exercise")
         res.status(200).json({success: true, data: workouts})
     }catch(error){
         console.log("Error in getWorkouts", error.message)
@@ -44,7 +49,8 @@ export const createWorkout = async (req, res) => {
    
     const newWorkout = new Workout({
         name, 
-        exercises
+        exercises,
+        user: req.user._id
     })
 
     await newWorkout.save()

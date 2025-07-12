@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Flex,
@@ -24,6 +24,7 @@ import {
 import { useColorMode } from "@/components/ui/color-mode";
 import { useColorModeValue } from "./ui/color-mode";
 import { useAuthStore } from "@/store/userAuth";
+import { useWorkoutStore } from "@/store/workout";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -31,11 +32,13 @@ const Navbar = () => {
   const bg = useColorModeValue("gray.100", "gray.900");
   const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
 
+
   const { logout, authUser } = useAuthStore();
 
   const handleLogOut = async () => {
     logout();
   };
+
 
   return (
     <Box

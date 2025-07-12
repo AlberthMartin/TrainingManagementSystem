@@ -1,10 +1,19 @@
 import { useWorkoutStore } from "@/store/workout";
-import { Box, Stack, Heading, Text, Flex, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Heading,
+  Text,
+  Flex,
+  Button,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import WorkoutCard from "@/components/WorkoutCard";
 import { useColorModeValue } from "../components/ui/color-mode";
+import CardGrid from "@/components/CardGrid";
 
 export default function WorkoutsPage() {
   const TaskBarBG = useColorModeValue("gray.100", "gray.900");
@@ -15,10 +24,6 @@ export default function WorkoutsPage() {
   useEffect(() => {
     fetchWorkouts();
   }, [fetchWorkouts]);
-
-  useEffect(() => {
-    workouts.forEach((w) => console.log("Workout key:", w._id));
-  }, [workouts]);
 
   return (
     <Box ml="20">
@@ -43,7 +48,7 @@ export default function WorkoutsPage() {
                 _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
               >
                 <Plus size={16} />
-                Create New Workout
+                <Text fontWeight="semibold">Create</Text>
               </Button>
             </Link>
           </Flex>
@@ -54,7 +59,7 @@ export default function WorkoutsPage() {
         </Heading>
 
         {/*Workout cards */}
-        <Flex wrap="wrap" gap="4" mx="8">
+        <CardGrid>
           {workouts.map((workout, i) => (
             <WorkoutCard
               key={workout._id || i}
@@ -63,7 +68,8 @@ export default function WorkoutsPage() {
               exercises={workout.exercises}
             />
           ))}
-        </Flex>
+          </CardGrid>
+        
       </Stack>
     </Box>
   );

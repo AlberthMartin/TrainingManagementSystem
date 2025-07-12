@@ -33,6 +33,7 @@ export default function WorkoutForm({ workoutId }) {
 
   const fetchExercises = useExerciseStore((state) => state.fetchExercises);
   const exercises = useExerciseStore((state) => state.exercises);
+  const authUser = useWorkoutStore((state) => state.authUser);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
@@ -60,10 +61,15 @@ export default function WorkoutForm({ workoutId }) {
   useEffect(() => {
     if (isEdit && workoutId) {
       fetchWorkout(workoutId)
-        .then(({success, workout}) => {
+        .then(({ success, workout }) => {
           console.log("Fetched workout data:", workout);
 
-          if (!success || !workout || !workout.name || !Array.isArray(workout.exercises)) {
+          if (
+            !success ||
+            !workout ||
+            !workout.name ||
+            !Array.isArray(workout.exercises)
+          ) {
             console.error("Invalid workout data fetched:", workout);
             toaster.create({
               title: "Error",
@@ -78,9 +84,10 @@ export default function WorkoutForm({ workoutId }) {
           setNewWorkout({
             name: workout.name,
             exercises: workout.exercises.map((ex) => ({
-                ...ex,
-                exercise: typeof ex.exercise === "object" ? ex.exercise._id : ex.exercise,
-              })),
+              ...ex,
+              exercise:
+                typeof ex.exercise === "object" ? ex.exercise._id : ex.exercise,
+            })),
           });
         })
         .catch((error) => {

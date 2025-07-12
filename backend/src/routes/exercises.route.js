@@ -4,9 +4,9 @@ import { protectRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router();
 
-router.get("/", getExercises)
-router.post("/",createExercise)
-router.delete("/:id",deleteExercise)
-router.put("/:id",updateExercise)
+router.get("/", protectRoute, getExercises)
+router.post("/",protectRoute, createExercise)
+router.delete("/:id",protectRoute, deleteExercise)
+router.put("/:id",protectRoute, updateExercise)
 
 export default router;

@@ -5,12 +5,13 @@ import Navbar from './components/Navbar'
 
 import { Button, ButtonGroup, Box, AbsoluteCenter,Spinner, Flex  } from "@chakra-ui/react"
 import { Route, Routes, Navigate } from 'react-router-dom'
-
+import ActiveWorkoutBottomBar from './components/ActiveWorkoutBottomBar'
 import ExercisesPage from './pages/ExercisesPage'
 
 import CreateExercisePage from './pages/CreateExercisePage'
 
 import WorkoutsPage from './pages/WorkoutsPage'
+import ActiveWorkout from './pages/ActiveWorkout'
 
 import HomePage from './pages/HomePage'
 import HistoryPage from './pages/HistoryPage'
@@ -19,12 +20,14 @@ import SignUpPage from './pages/SignUpPage'
 import LoginPage from './pages/LoginPage'
 
 import { useAuthStore } from './store/userAuth'
+import { useWorkoutStore } from './store/workout'
 import { useEffect } from "react"
 import CreateWorkoutPage from './pages/CreateWorkoutPage'
 import EditWorkoutPage from './pages/EditWorkoutPage'
 
 function App() {
   const {authUser, checkAuth, isCheckingAuth} = useAuthStore()
+  const activeWorkout = useWorkoutStore((state) => state.activeWorkout);
 
   useEffect(() => {
     checkAuth();
@@ -55,9 +58,13 @@ function App() {
         <Route path="/createExercise" element={authUser ? <CreateExercisePage/> : <Navigate to="/login" />}/>
        
         <Route path="/workouts" element={authUser ? <WorkoutsPage/> : <Navigate to="/login" />}/>
-        <Route path="/createWorkout" element={<CreateWorkoutPage/>}/>
-        <Route path="/editWorkout/:workoutId" element={ <EditWorkoutPage/>}/>
+        {/*TODO: REMEMBER TO ADD AUTHENTICATION */}
+        <Route path="/createWorkout" element={authUser ? <CreateWorkoutPage/> : <Navigate to="/login" />}/>
+        <Route path="/editWorkout/:workoutId" element={authUser ? <EditWorkoutPage/> : <Navigate to="/login" />}/>
+        <Route path="/activeWorkout" element={authUser ? <ActiveWorkout/> : <Navigate to="/login" />}/>
       </Routes> 
+
+      {activeWorkout && <ActiveWorkoutBottomBar/>}
       
     </>
   )

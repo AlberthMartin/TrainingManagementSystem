@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import ExerciseTable from "./ExerciseTable";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useWorkoutStore } from "@/store/workout";
 import { useState } from "react";
 
@@ -21,6 +21,9 @@ import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 export default function WorkoutCard({ name, exercises = [], id }) {
   const secondaryTextColor = useColorModeValue("gray.700", "gray.400");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const setActiveWorkoutById = useWorkoutStore((s) => s.setActiveWorkoutById);
 
   const { deleteWorkout } = useWorkoutStore();
 
@@ -32,8 +35,19 @@ export default function WorkoutCard({ name, exercises = [], id }) {
       console.error("Error in handleDeleteWorkout", err);
     }
   };
+
+  const handleStartWorkout = async (id) => {
+    try{
+      await setActiveWorkoutById(id)
+      console.log(`Workout ${id} started successfully`);
+      navigate(`/activeWorkout`)
+
+    }catch(error){
+      console.error("Error in handleStartWorkout", error);
+    }
+  }
   return (
-    <Box position="relative">
+    <Box w="full">
       {/*The Delet confirmation alert when trying to delete a workout */}
       <DeleteConfirmationDialog
         isOpen={isDialogOpen}
@@ -41,7 +55,8 @@ export default function WorkoutCard({ name, exercises = [], id }) {
         onDelete={() => handleDeleteWorkout(id)}
         itemToBeDeleted={name}
       />
-      <Card.Root width="320px" height="200px" variant="outline">
+      <Card.Root width="full" height="200px" variant="outline" display="flex"
+  flexDirection="column">
         {/*Menu  */}
         <Box position="absolute" top="2" right="2" zIndex="1" p="2">
           {/*Menu on the card */}
@@ -73,7 +88,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
           </Menu.Root>
         </Box>
 
-        <Card.Body gap="2">
+        <Card.Body flex="1" overflow="hidden">
           <Card.Title mb="2">{name} </Card.Title>
 
           {/*The exercises in the workout listed ..., ... */}
@@ -83,7 +98,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
               : "No exercises added"}
           </Text>
         </Card.Body>
-        <Card.Footer justifyContent="flex-end">
+        <Card.Footer justifyContent="flex-end" mt="auto">
           <Link to={`/editWorkout/${id}`}>
             <Button variant="outline">Edit</Button>
           </Link>
@@ -94,7 +109,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
             motionPreset="slide-in-bottom"
           >
             <Dialog.Trigger asChild>
-              <Button>Open</Button>
+              <Button>Train</Button>
             </Dialog.Trigger>
             {/**The dialog that opens when you click the exercise */}
             <Portal>
@@ -115,6 +130,11 @@ export default function WorkoutCard({ name, exercises = [], id }) {
                         "No exercises"
                       )}
                     </Flex>
+                    {/*TODO* start workout button*/}
+                    <Link to={`/activeWorkout`}>
+                    <Button  m="6" onClick={() => handleStartWorkout(id)}>Start Workout</Button>
+                    </Link>
+
                   </Dialog.Body>
                 </Dialog.Content>
               </Dialog.Positioner>

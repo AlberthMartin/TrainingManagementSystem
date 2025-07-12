@@ -4,10 +4,10 @@ import { createWorkout, deleteWorkout, getWorkoutById, getWorkouts, updateWorkou
 
 const router = express.Router();
 
-router.get("/", getWorkouts)
-router.get("/:id", getWorkoutById)
-router.post("/", createWorkout)
-router.delete("/:id", deleteWorkout)
-router.put("/:id", updateWorkout)
+router.get("/", protectRoute, getWorkouts)
+router.get("/:id", protectRoute, getWorkoutById)
+router.post("/", protectRoute, createWorkout)
+router.delete("/:id", protectRoute, deleteWorkout)
+router.put("/:id", protectRoute, updateWorkout)
 
 export default router;

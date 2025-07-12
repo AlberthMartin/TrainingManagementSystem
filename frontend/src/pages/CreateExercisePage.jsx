@@ -29,7 +29,7 @@ export default function CreateExercisePage() {
                 description: message,
                 status: "error",
                 type: "error",
-                duration: 3000, //Default 5 s now 3 s
+                duration: 3000, 
                 isClosable: "true"
             })
         }else{
@@ -38,7 +38,7 @@ export default function CreateExercisePage() {
                 description: message,
                 status: "success",
                 type: "success",
-                duration: 1000, //Default 5 s now 3 s
+                duration: 1000,  
                 isClosable: "true"
             })
             setTimeout(() => {

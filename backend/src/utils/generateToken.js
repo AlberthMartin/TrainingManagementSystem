@@ -10,7 +10,7 @@ export const generateToken = (userId, res) =>{
         expiresIn: "7d"
     })
     //Sends the token as a HTTP-only cookie
-    res.cookie("token", token, {
+    res.cookie("jwt", token, {
         maxAge: 7*24*60*60*1000, // 7 days in milliseconds, save login for 7 days
         httpOnly: true, // prevents XSS attacks (cross site scripting attacks)
         sameSite: "strict", // prevents CSRF attacks cross-site request forgery attacks

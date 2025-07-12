@@ -18,6 +18,7 @@ export const useExerciseStore = create((set) => ({
             headers: {
                 "Content-Type":"application/json" //Say to server that JSON is comming
             },
+            credentials: "include", // This sends the jwt cookie
             body: JSON.stringify(newExercise) // Sends exercise object as JSON
         })
 
@@ -37,7 +38,9 @@ export const useExerciseStore = create((set) => ({
         //Then it awaits a HTTP response from the server
         //res is a RESPONSE OBJECT which has metadata and a body
         //the /api/exercises Backned responds with the array of exercises and a success: true or false if something went wrong
-        const res = await fetch("/api/exercises")
+        const res = await fetch("/api/exercises", {
+            credentials: "include", // This sends the jwt cookie
+        })
 
         //Makes the response object into json
         const data = await res.json();
@@ -50,7 +53,8 @@ export const useExerciseStore = create((set) => ({
     deleteExercise: async (id) => {
         //Sends a DELETE request to backend API at /api/exercises/id
         const res = await fetch(`/api/exercises/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            credentials: "include",
         })
 
         //Creates an empty JavaScript object
@@ -94,6 +98,7 @@ export const useExerciseStore = create((set) => ({
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(updatedExercise)
         })
         //response to JSON
