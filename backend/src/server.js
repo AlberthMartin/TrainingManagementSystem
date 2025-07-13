@@ -4,6 +4,7 @@ import express from "express"
 import exerciseRoutes from "./routes/exercises.route.js";
 import authRoutes from "./routes/auth.route.js"
 import workoutRoutes from "./routes/workout.route.js"
+import completedWorkoutRoutes from "./routes/completedWorkout.route.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 
@@ -22,6 +23,7 @@ app.use(cors({
 app.use("/api/exercises", exerciseRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/workouts", workoutRoutes)
+app.use("/api/completedWorkouts", completedWorkoutRoutes)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () =>{

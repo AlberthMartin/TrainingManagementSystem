@@ -1,5 +1,4 @@
 import Workout from "../models/workout.model.js";
-import Exercise from "../models/models.exercise.js";
 import mongoose from "mongoose";
 
 //Workouts Backend API, to communicate with MongoDB
@@ -74,11 +73,11 @@ export const deleteWorkout = async (req, res) => {
     const { id } = req.params
 
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({success: false, message: "Invalid Program Id"})
+        return res.status(404).json({success: false, message: "Invalid workout Id"})
     }
 
     const deletedWorkout = await Workout.findByIdAndDelete(id)
-    res.status(200).json({success: true, data: deletedWorkout, message:"Program deleted"})
+    res.status(200).json({success: true, data: deletedWorkout, message:"Workout deleted"})
 
     }catch(error){
         console.log("Error in deleteWorkout", error.message)
@@ -93,7 +92,7 @@ export const updateWorkout = async (req, res) => {
     const workout = req.body;
 
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({success: false, message: "Invalid Program Id"})
+        return res.status(404).json({success: false, message: "Invalid workout Id"})
     }
 
     const updatedWorkout = await Workout.findByIdAndUpdate(id, workout, {new: true})
