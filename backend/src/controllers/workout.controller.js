@@ -24,10 +24,7 @@ export const getWorkoutById = async (req, res) =>{
         if(!workout) {
             return res.status(404).json({ success: false, message: "Workout not found" });
         }
-        //the workout was not created by this user
-        if(workout.user != req.user._id){
-            return res.status(404).json({ success: false, message: "Workout not found" });
-        }
+       
 
         res.status(200).json({success: true, data: workout})
 
