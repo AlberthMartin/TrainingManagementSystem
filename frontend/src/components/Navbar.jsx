@@ -30,7 +30,7 @@ import { ClockIcon as ClockOutlineIcon } from "@heroicons/react/24/outline";
 import { useColorMode } from "@/components/ui/color-mode";
 import { useColorModeValue } from "./ui/color-mode";
 import { useAuthStore } from "@/store/userAuth";
-import { useWorkoutStore } from "@/store/workout";
+
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();

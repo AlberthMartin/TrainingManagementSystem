@@ -6,10 +6,6 @@ import {
   Flex,
   Box,
   Heading,
-  Avatar,
-  Text,
-  HStack,
-  Container,
   Button,
   ButtonGroup,
   IconButton,
@@ -18,9 +14,9 @@ import {
   Input,
   InputGroup,
   Spinner,
-  SimpleGrid
+  SimpleGrid,
 } from "@chakra-ui/react";
-import { useExerciseStore } from "@/store/exercise";
+import { useExerciseStore } from "@/store/exercises";
 import { Link } from "react-router-dom";
 import { Plus, Search } from "lucide-react";
 import { useColorModeValue } from "../components/ui/color-mode";

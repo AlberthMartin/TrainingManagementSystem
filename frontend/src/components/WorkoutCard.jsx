@@ -7,12 +7,13 @@ import {
   Dialog,
   Portal,
   Menu,
-  Badge
+  Badge,
 } from "@chakra-ui/react";
 import ExerciseTable from "./ExerciseTable";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useWorkoutStore } from "@/store/workout";
+import { useWorkoutStore } from "@/store/workouts";
+import { useActiveWorkoutStore } from "@/store/activeWorkout";
 import { useState } from "react";
 
 import { useColorModeValue } from "../components/ui/color-mode";
@@ -24,7 +25,9 @@ export default function WorkoutCard({ name, exercises = [], id }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
 
-  const setActiveWorkoutById = useWorkoutStore((s) => s.setActiveWorkoutById);
+  const setActiveWorkoutById = useActiveWorkoutStore(
+    (s) => s.setActiveWorkoutById
+  );
 
   const { deleteWorkout } = useWorkoutStore();
 
@@ -48,7 +51,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
   };
   return (
     <Box w="full">
-      {/*The Delet confirmation alert when trying to delete a workout */}
+      {/*The Delete confirmation alert when trying to delete a workout */}
       <DeleteConfirmationDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
@@ -118,11 +121,13 @@ export default function WorkoutCard({ name, exercises = [], id }) {
               </Text>
             </Card.Body>
             <Card.Footer px="4" pb="4">
-              <Flex justifyContent="flex-start"  gap="2" flexWrap="wrap">
-              <Badge>Chest: 5</Badge>
-              <Badge>Back: 5</Badge>
-              <Badge>Biceps: 10</Badge>
-              <Badge>Sholders: 10</Badge>
+              <Flex justifyContent="flex-start" gap="2" flexWrap="wrap">
+                {/*TODO: Make this render from workout info that is created when a 
+              workout is made or edited */}
+                <Badge>Chest: 5</Badge>
+                <Badge>Back: 5</Badge>
+                <Badge>Biceps: 10</Badge>
+                <Badge>Sholders: 10</Badge>
               </Flex>
             </Card.Footer>
           </Card.Root>

@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import Navbar from './components/Navbar'
 
-import { Button, ButtonGroup, Box, AbsoluteCenter,Spinner, Flex  } from "@chakra-ui/react"
+import { Spinner, Flex  } from "@chakra-ui/react"
 import { Route, Routes, Navigate } from 'react-router-dom'
 import ActiveWorkoutBottomBar from './components/ActiveWorkoutBottomBar'
 import ExercisesPage from './pages/ExercisesPage'
@@ -20,15 +20,15 @@ import SignUpPage from './pages/SignUpPage'
 import LoginPage from './pages/LoginPage'
 
 import { useAuthStore } from './store/userAuth'
-import { useWorkoutStore } from './store/workout'
+import { useActiveWorkoutStore } from './store/activeWorkout'
 import { useEffect } from "react"
 import CreateWorkoutPage from './pages/CreateWorkoutPage'
 import EditWorkoutPage from './pages/EditWorkoutPage'
 
 function App() {
   const {authUser, checkAuth, isCheckingAuth} = useAuthStore()
-  const activeWorkout = useWorkoutStore((state) => state.activeWorkout);
-  const getElapsedSeconds = useWorkoutStore((s) => s.getElapsedSeconds);
+  const activeWorkout = useActiveWorkoutStore((state) => state.activeWorkout);
+  const getElapsedSeconds = useActiveWorkoutStore((s) => s.getElapsedSeconds);
 
   const [elapsed, setElapsed] = useState(getElapsedSeconds());
 

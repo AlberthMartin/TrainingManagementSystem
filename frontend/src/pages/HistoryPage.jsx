@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Box, Stack, Heading, Text } from "@chakra-ui/react";
 import CompletedWorkoutCard from "@/components/CompletedWorkoutCard";
 import CardGrid from "@/components/CardGrid";
-import { useWorkoutStore } from "@/store/workout";
+import { useCompleteWorkoutsStore } from "@/store/completedWorkouts";
 
 export default function HistoryPage() {
-  const completedWorkouts = useWorkoutStore((state) => state.completedWorkouts);
-  const fetchCompletedWorkouts = useWorkoutStore(
+  const completedWorkouts = useCompleteWorkoutsStore((state) => state.completedWorkouts);
+  const fetchCompletedWorkouts = useCompleteWorkoutsStore(
     (state) => state.fetchCompletedWorkouts
   );
 

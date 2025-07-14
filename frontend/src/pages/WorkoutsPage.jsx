@@ -1,4 +1,4 @@
-import { useWorkoutStore } from "@/store/workout";
+import { useWorkoutStore } from "@/store/workouts";
 import {
   Box,
   Stack,

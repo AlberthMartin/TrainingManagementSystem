@@ -1,16 +1,6 @@
 import React from "react";
-import {
-  VStack,
-  Box,
-  Text,
-  HStack,
-  Container,
-  Table,
-  Input,
-  Button,
-} from "@chakra-ui/react";
+import { VStack, Text, HStack, Table, Input, Button } from "@chakra-ui/react";
 import { EllipsisVertical } from "lucide-react";
-import { useWorkoutStore } from "@/store/workout";
 
 export default function DisplayExerciseInWorkout({
   name,
@@ -19,7 +9,7 @@ export default function DisplayExerciseInWorkout({
   onAddSet,
   onRemoveSet,
   onUpdateSetValue,
-  mode //create, edit, log
+  mode, //create, edit, log
 }) {
   return (
     <VStack>
@@ -38,7 +28,11 @@ export default function DisplayExerciseInWorkout({
             <Table.ColumnHeader>Weight</Table.ColumnHeader>
             <Table.ColumnHeader>Reps</Table.ColumnHeader>
             <Table.ColumnHeader></Table.ColumnHeader>
-            {mode === "log" ? <Table.ColumnHeader>Completed</Table.ColumnHeader> : ""}
+            {mode === "log" ? (
+              <Table.ColumnHeader>Completed</Table.ColumnHeader>
+            ) : (
+              ""
+            )}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -91,7 +85,9 @@ export default function DisplayExerciseInWorkout({
           ))}
         </Table.Body>
       </Table.Root>
-      <Button onClick={() => onAddSet(exerciseId)} variant="outline" w="full">+ Set</Button>
+      <Button onClick={() => onAddSet(exerciseId)} variant="outline" w="full">
+        + Set
+      </Button>
     </VStack>
   );
 }

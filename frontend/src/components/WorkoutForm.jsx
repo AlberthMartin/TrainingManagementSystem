@@ -18,12 +18,13 @@ import React from "react";
 import { useColorModeValue } from "../components/ui/color-mode";
 import { useState, useEffect } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
-import { useWorkoutStore } from "@/store/workout";
-import { useExerciseStore } from "@/store/exercise";
+import { useWorkoutStore } from "@/store/workouts";
+import { useExerciseStore } from "@/store/exercises";
 import { useNavigate } from "react-router-dom";
 import { Plus, Search, X } from "lucide-react";
 import DisplayExerciseInWorkout from "@/components/DisplayExerciseInWorkout";
-import WorkoutTimerDisplay from "./WorkoutTimerDisplay";
+import { useCompleteWorkoutsStore } from "@/store/completedWorkouts";
+import { useActiveWorkoutStore } from "@/store/activeWorkout";
 
 //Supports editing of workout, creating of workout and logging active workout
 //mode === "edit" "create" "log" reflects the UI
@@ -32,26 +33,21 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
   const textColor = useColorModeValue("black", "white");
   const navigate = useNavigate();
 
-  const {
-    createWorkout,
-    fetchWorkout,
-    updateWorkout,
-    saveCompletedWorkout,
-    setActiveWorkout,
-    clearActiveWorkout,
-  } = useWorkoutStore();
+  const { createWorkout, fetchWorkout, updateWorkout } = useWorkoutStore();
 
-  const activeWorkout = useWorkoutStore((state) => state.activeWorkout);
+  const { saveCompletedWorkout } = useCompleteWorkoutsStore();
+  const { setActiveWorkout, clearActiveWorkout } = useActiveWorkoutStore();
+
+  const activeWorkout = useActiveWorkoutStore((state) => state.activeWorkout);
 
   //The mode the form should be in
   const isCreate = mode === "create";
   const isEdit = mode === "edit";
   const isLog = mode === "log";
 
-
   const fetchExercises = useExerciseStore((state) => state.fetchExercises);
   const exercises = useExerciseStore((state) => state.exercises);
-  const getElapsedSeconds = useWorkoutStore((s) => s.getElapsedSeconds);
+  const getElapsedSeconds = useActiveWorkoutStore((s) => s.getElapsedSeconds);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
@@ -72,7 +68,6 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
     name: "",
     exercises: [],
   });
-
 
   const createToaster = (type, description, duration) => {
     toaster.create({
@@ -112,7 +107,7 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
                 typeof ex.exercise === "object" ? ex.exercise._id : ex.exercise,
             })),
           });
-          
+
           if (isLog && !activeWorkout) {
             setActiveWorkout(workout);
           }
@@ -173,7 +168,7 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
       }
     }
     //Saving the log of a completed workout
-    if(isLog) {
+    if (isLog) {
       const { name, exercises } = formData;
       const workoutTemplate = activeWorkout;
       const duration = getElapsedSeconds();
@@ -192,7 +187,7 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
       if (!success) {
         createToaster("error", message);
       } else {
-        clearActiveWorkout()
+        clearActiveWorkout();
         navigate("/home");
       }
     }

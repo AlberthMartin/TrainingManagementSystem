@@ -3,7 +3,7 @@ import React from 'react'
 import { useColorModeValue } from '../components/ui/color-mode'
 import { useState } from 'react'
 import { Toaster, toaster } from "@/components/ui/toaster"
-import { useExerciseStore } from '@/store/exercise'
+import { useExerciseStore } from '@/store/exercises'
 import { useNavigate } from "react-router-dom";
 
 

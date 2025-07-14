@@ -2,16 +2,14 @@ import React from "react";
 import { Box, Card, Text, Badge, Flex } from "@chakra-ui/react";
 import WorkoutTimerDisplay from "./WorkoutTimerDisplay";
 import { Clock, Weight, Medal } from "lucide-react";
+import { useState } from "react";
 
-export default function CompletedWorkoutCard({
-  name,
-  exercises,
-  workoutTemplate,
-  duration,
-  completedAt,
-  id,
-}) {
+export default function CompletedWorkoutCard({name, exercises, workoutTemplate, duration, completedAt, id,}) {
+  
   const date = new Date(completedAt);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+
   return (
     <Card.Root width="full">
       <Card.Body gap="2">
@@ -28,25 +26,31 @@ export default function CompletedWorkoutCard({
           Sets
         </Text>
         <Box as="ul" fontSize="sm">
+        <Flex justifyContent="flex-start" direction="column" gap="1">
           {exercises.map((ex, i) => (
             <li key={id + i}>
               {ex.sets?.length ?? 0} x {ex.exercise.name}
             </li>
           ))}
+          </Flex>
         </Box>
       </Card.Body>
-      <Card.Footer justifyContent="flex-start">
-        <Badge variant="subtle">
-          <Clock size={14} />
-          <WorkoutTimerDisplay seconds={duration} />
-        </Badge>
-        <Badge variant="subtle">
-          <Weight size={14} />
-          Volume
-        </Badge>
-        <Badge variant="subtle">
-          <Medal size={14}/>2 PR
-        </Badge>
+      <Card.Footer px="4" pb="4">
+        <Flex justifyContent="flex-start"  gap="2" flexWrap="wrap">
+          <Badge variant="subtle">
+            <Clock size={14} />
+            <WorkoutTimerDisplay seconds={duration} />
+          </Badge>
+          {/*TODO: Make something that can calculate this stats 
+        when completing a workout*/}
+          <Badge variant="subtle">
+            <Weight size={14} />
+            Volume
+          </Badge>
+          <Badge variant="subtle">
+            <Medal size={14} />2 PR
+          </Badge>
+        </Flex>
       </Card.Footer>
     </Card.Root>
   );

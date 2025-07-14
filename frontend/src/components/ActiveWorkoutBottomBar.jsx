@@ -1,14 +1,14 @@
 import React from "react";
-import { useWorkoutStore } from "@/store/workout";
+import { useWorkoutStore } from "@/store/workouts";
 import { Link } from "react-router-dom";
 import { Box, Flex, Text, Icon } from "@chakra-ui/react";
 import { TimerReset } from "lucide-react";
 import { useColorModeValue } from "./ui/color-mode";
 import WorkoutTimerDisplay from "./WorkoutTimerDisplay";
-import { useEffect } from "react";
+import { useActiveWorkoutStore } from "@/store/activeWorkout";
 
 export default function ActiveWorkoutBottomBar({seconds}) {
-  const activeWorkout = useWorkoutStore((state) => state.activeWorkout);
+  const activeWorkout = useActiveWorkoutStore((state) => state.activeWorkout);
 
   if (!activeWorkout?._id) return null;
 
