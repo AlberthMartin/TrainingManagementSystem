@@ -120,4 +120,6 @@ export const useExerciseStore = create((set) => ({
         
         return {success: true, message: data.message}
     }
+
+    
 }))

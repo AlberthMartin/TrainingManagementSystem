@@ -19,6 +19,7 @@ export default function DisplayExerciseInWorkout({
   onAddSet,
   onRemoveSet,
   onUpdateSetValue,
+  mode //create, edit, log
 }) {
   return (
     <VStack>
@@ -37,6 +38,7 @@ export default function DisplayExerciseInWorkout({
             <Table.ColumnHeader>Weight</Table.ColumnHeader>
             <Table.ColumnHeader>Reps</Table.ColumnHeader>
             <Table.ColumnHeader></Table.ColumnHeader>
+            {mode === "log" ? <Table.ColumnHeader>Completed</Table.ColumnHeader> : ""}
           </Table.Row>
         </Table.Header>
         <Table.Body>

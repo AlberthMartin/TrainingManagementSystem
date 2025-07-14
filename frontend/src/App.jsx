@@ -28,6 +28,20 @@ import EditWorkoutPage from './pages/EditWorkoutPage'
 function App() {
   const {authUser, checkAuth, isCheckingAuth} = useAuthStore()
   const activeWorkout = useWorkoutStore((state) => state.activeWorkout);
+  const getElapsedSeconds = useWorkoutStore((s) => s.getElapsedSeconds);
+
+  const [elapsed, setElapsed] = useState(getElapsedSeconds());
+
+  useEffect(() => {
+    if (!activeWorkout) return;
+
+    const interval = setInterval(() => {
+      setElapsed(getElapsedSeconds());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [activeWorkout, getElapsedSeconds]);
+
 
   useEffect(() => {
     checkAuth();
@@ -61,10 +75,10 @@ function App() {
         {/*TODO: REMEMBER TO ADD AUTHENTICATION */}
         <Route path="/createWorkout" element={authUser ? <CreateWorkoutPage/> : <Navigate to="/login" />}/>
         <Route path="/editWorkout/:workoutId" element={authUser ? <EditWorkoutPage/> : <Navigate to="/login" />}/>
-        <Route path="/activeWorkout" element={authUser ? <ActiveWorkout/> : <Navigate to="/login" />}/>
+        <Route path="/activeWorkout/:workoutId" element={authUser ? <ActiveWorkout/> : <Navigate to="/login" />}/>
       </Routes> 
 
-      {activeWorkout && <ActiveWorkoutBottomBar/>}
+      {activeWorkout && <ActiveWorkoutBottomBar seconds={elapsed}/>}
       
     </>
   )

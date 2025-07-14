@@ -3,10 +3,10 @@ import { Box, Stack, Heading, Text } from "@chakra-ui/react"
 
 export default function HistoryPage() {
   return (
-    <Box ml="32" mt="10"  >
+    <Box ml="20"   >
       <Stack>
-        <Heading>
-            Workout history
+        <Heading m="4" fontSize="xl">
+            History
         </Heading>
         
       </Stack>

@@ -40,7 +40,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
     try{
       await setActiveWorkoutById(id)
       console.log(`Workout ${id} started successfully`);
-      navigate(`/activeWorkout`)
+      navigate(`/activeWorkout/${id}`)
 
     }catch(error){
       console.error("Error in handleStartWorkout", error);
@@ -131,7 +131,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
                       )}
                     </Flex>
                     {/*TODO* start workout button*/}
-                    <Link to={`/activeWorkout`}>
+                    <Link to={`/activeWorkout/${id}`}>
                     <Button  m="6" onClick={() => handleStartWorkout(id)}>Start Workout</Button>
                     </Link>
 

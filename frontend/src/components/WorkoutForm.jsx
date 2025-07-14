@@ -23,17 +23,35 @@ import { useExerciseStore } from "@/store/exercise";
 import { useNavigate } from "react-router-dom";
 import { Plus, Search, X } from "lucide-react";
 import DisplayExerciseInWorkout from "@/components/DisplayExerciseInWorkout";
+import WorkoutTimerDisplay from "./WorkoutTimerDisplay";
 
-export default function WorkoutForm({ workoutId }) {
+//Supports editing of workout, creating of workout and logging active workout
+//mode === "edit" "create" "log" reflects the UI
+export default function WorkoutForm({ workoutId, mode = "create" }) {
   const inputFieldColor = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("black", "white");
   const navigate = useNavigate();
 
-  const isEdit = Boolean(workoutId);
+  const {
+    createWorkout,
+    fetchWorkout,
+    updateWorkout,
+    saveCompletedWorkout,
+    setActiveWorkout,
+    clearActiveWorkout,
+  } = useWorkoutStore();
+
+  const activeWorkout = useWorkoutStore((state) => state.activeWorkout);
+
+  //The mode the form should be in
+  const isCreate = mode === "create";
+  const isEdit = mode === "edit";
+  const isLog = mode === "log";
+
 
   const fetchExercises = useExerciseStore((state) => state.fetchExercises);
   const exercises = useExerciseStore((state) => state.exercises);
-  const authUser = useWorkoutStore((state) => state.authUser);
+  const getElapsedSeconds = useWorkoutStore((s) => s.getElapsedSeconds);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
@@ -50,16 +68,26 @@ export default function WorkoutForm({ workoutId }) {
     fetchExercises();
   }, [fetchExercises]);
 
-  const [newWorkout, setNewWorkout] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     exercises: [],
   });
 
-  const { createWorkout, fetchWorkout, updateWorkout } = useWorkoutStore();
 
-  //If a workout is being edited fetch the values
+  const createToaster = (type, description, duration) => {
+    toaster.create({
+      title: type === "error" ? "Error" : "Success",
+      description: description,
+      status: type,
+      type: type,
+      duration: duration ? duration : 3000, //Default 3000
+      isClosable: true,
+    });
+  };
+
+  //If a workout is being edited or logged fetch the values
   useEffect(() => {
-    if (isEdit && workoutId) {
+    if ((isEdit || isLog) && workoutId) {
       fetchWorkout(workoutId)
         .then(({ success, workout }) => {
           console.log("Fetched workout data:", workout);
@@ -71,17 +99,12 @@ export default function WorkoutForm({ workoutId }) {
             !Array.isArray(workout.exercises)
           ) {
             console.error("Invalid workout data fetched:", workout);
-            toaster.create({
-              title: "Error",
-              description: "Failed to load workout data.",
-              status: "error",
-              type: "error",
-              duration: 3000,
-              isClosable: true,
-            });
+
+            createToaster("error", "Failed to load workout data.");
+
             return;
           }
-          setNewWorkout({
+          setFormData({
             name: workout.name,
             exercises: workout.exercises.map((ex) => ({
               ...ex,
@@ -89,23 +112,21 @@ export default function WorkoutForm({ workoutId }) {
                 typeof ex.exercise === "object" ? ex.exercise._id : ex.exercise,
             })),
           });
+          
+          if (isLog && !activeWorkout) {
+            setActiveWorkout(workout);
+          }
         })
         .catch((error) => {
           console.error("Error fetching workout:", error);
-          toaster.create({
-            title: "Error",
-            description: "Could not fetch workout",
-            status: "error",
-            type: "error",
-            duration: 3000,
-            isClosable: true,
-          });
+          createToaster("error", "Could not fetch workout");
         });
     }
-  }, [workoutId, isEdit]);
+  }, [workoutId, isEdit, isLog]);
 
   const handleSaveWorkout = async () => {
-    const isValidWorkout = newWorkout.exercises.every((ex) =>
+    // Validate
+    const isValidWorkout = formData.exercises.every((ex) =>
       ex.sets.every(
         (set) =>
           typeof set.reps === "number" &&
@@ -120,93 +141,75 @@ export default function WorkoutForm({ workoutId }) {
     );
 
     if (!isValidWorkout) {
-      toaster.create({
-        title: "Invalid input",
-        description: "Make sure all sets have valid numbers",
-        status: "error",
-        type: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      createToaster("error", "Make sure all sets have valid numbers");
       return;
     }
-    if (!newWorkout.name.trim()) {
-      toaster.create({
-        title: "Invalid input",
-        description: "The workout needs a name",
-        status: "error",
-        type: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+    if (!formData.name.trim()) {
+      createToaster("error", "The workout needs a name");
       return;
     }
-
+    //Editing existing workout
     if (isEdit) {
-      const { success, message } = await updateWorkout(workoutId, newWorkout);
+      const { success, message } = await updateWorkout(workoutId, formData);
       if (!success) {
-        toaster.create({
-          title: "Error",
-          description: message,
-          status: "error",
-          type: "error",
-          duration: 3000,
-          isClosable: "true",
-        });
+        createToaster("error", message);
       } else {
-        toaster.create({
-          title: "Success",
-          description: message,
-          status: "success",
-          type: "success",
-          duration: 1000,
-          isClosable: "true",
-        });
+        createToaster("success", message, 1000);
         setTimeout(() => {
           navigate("/workouts");
         }, 1000);
       }
-    } else {
-      const { success, message } = await createWorkout(newWorkout);
+    }
+    //Creating a new workout
+    if (isCreate) {
+      const { success, message } = await createWorkout(formData);
       if (!success) {
-        toaster.create({
-          title: "Error",
-          description: message,
-          status: "error",
-          type: "error",
-          duration: 3000,
-          isClosable: "true",
-        });
+        createToaster("error", message);
       } else {
-        toaster.create({
-          title: "Success",
-          description: message,
-          status: "success",
-          type: "success",
-          duration: 1000,
-          isClosable: "true",
-        });
+        createToaster("success", message, 1000);
         setTimeout(() => {
           navigate("/workouts");
         }, 1000);
+      }
+    }
+    //Saving the log of a completed workout
+    if(isLog) {
+      const { name, exercises } = formData;
+      const workoutTemplate = activeWorkout;
+      const duration = getElapsedSeconds();
+      const completedAt = new Date();
+
+      const completedWorkout = {
+        name,
+        exercises,
+        workoutTemplate,
+        duration,
+        completedAt,
+      };
+
+      const { success, message } = await saveCompletedWorkout(completedWorkout);
+
+      if (!success) {
+        createToaster("error", message);
+      } else {
+        clearActiveWorkout()
+        navigate("/home");
       }
     }
   };
 
-  //Add exercise to the workout being created
+  const handleCancelActiveWorkout = async () => {
+    clearActiveWorkout();
+    navigate("/home");
+  };
+
+  //Add exercise to workout form
   const handleAddExercise = async () => {
-    const alreadyExists = newWorkout.exercises.some(
+    const alreadyExists = formData.exercises.some(
       (ex) => ex.exercise === selectedExerciseId
     );
     if (alreadyExists) {
-      toaster.create({
-        title: "Error",
-        description: "Exercise already exists",
-        status: "error",
-        type: "error",
-        duration: 3000, //Default 5 s now 3 s
-        isClosable: "true",
-      });
+      createToaster("error", "Exercise already exists");
       return;
     }
 
@@ -222,7 +225,7 @@ export default function WorkoutForm({ workoutId }) {
         })),
     };
 
-    setNewWorkout((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       exercises: [...prev.exercises, newEx],
     })); //adds the exercise workout being created
@@ -233,7 +236,7 @@ export default function WorkoutForm({ workoutId }) {
 
   const addSetToExercise = (exerciseId) => {
     try {
-      setNewWorkout((prev) => ({
+      setFormData((prev) => ({
         ...prev,
         exercises: prev.exercises.map((ex) =>
           ex.exercise === exerciseId
@@ -258,7 +261,7 @@ export default function WorkoutForm({ workoutId }) {
   };
 
   const removeSetFromExercise = (exerciseId, setIndex) => {
-    setNewWorkout((prev) => {
+    setFormData((prev) => {
       return {
         ...prev,
         exercises: prev.exercises.map((ex) => {
@@ -275,7 +278,7 @@ export default function WorkoutForm({ workoutId }) {
   };
 
   const updateSetValue = (exerciseId, setIndex, field, value) => {
-    setNewWorkout((prev) => {
+    setFormData((prev) => {
       return {
         ...prev,
         exercises: prev.exercises.map((ex) => {
@@ -299,17 +302,23 @@ export default function WorkoutForm({ workoutId }) {
   return (
     <Container maxW="md" px="4" py="4" ml="20">
       <Stack>
-        <Heading>{isEdit ? "Edit workout" : "Create new workout"}</Heading>
+        <Heading>
+          {isLog
+            ? `Active Workout`
+            : isEdit
+            ? "Edit Workout"
+            : "Create New Workout"}
+        </Heading>
 
         <Box>
           <Stack>
             <Input
               placeholder="Workout name"
               name="name"
-              value={newWorkout.name}
+              value={formData.name}
               variant="flushed"
               onChange={(e) =>
-                setNewWorkout({ ...newWorkout, name: e.target.value })
+                setFormData({ ...formData, name: e.target.value })
               }
               bg={inputFieldColor}
               color={textColor}
@@ -318,7 +327,7 @@ export default function WorkoutForm({ workoutId }) {
 
             {/*The already added exercises */}
             <Stack spacing={4}>
-              {newWorkout.exercises.map((ex) => {
+              {formData.exercises.map((ex) => {
                 const exerciseDetails = exercises.find(
                   (e) => e._id === ex.exercise
                 );
@@ -334,6 +343,7 @@ export default function WorkoutForm({ workoutId }) {
                         onAddSet={addSetToExercise}
                         onRemoveSet={removeSetFromExercise}
                         onUpdateSetValue={updateSetValue}
+                        mode
                       />
                     </Box>
                   )
@@ -440,8 +450,21 @@ export default function WorkoutForm({ workoutId }) {
             </Dialog.Root>
 
             <Button onClick={handleSaveWorkout}>
-              {isEdit ? "Save Changes" : "Create Workout"}
+              {isLog
+                ? "Finish Workout"
+                : isEdit
+                ? "Save Changes"
+                : "Create Workout"}
             </Button>
+            {isLog && (
+              <Button
+                colorPalette="red"
+                variant="outline"
+                onClick={handleCancelActiveWorkout}
+              >
+                Cancel Workout
+              </Button>
+            )}
             <Toaster />
           </Stack>
         </Box>
