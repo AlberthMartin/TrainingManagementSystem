@@ -7,6 +7,7 @@ import {
   Dialog,
   Portal,
   Menu,
+  Badge
 } from "@chakra-ui/react";
 import ExerciseTable from "./ExerciseTable";
 import React from "react";
@@ -54,95 +55,109 @@ export default function WorkoutCard({ name, exercises = [], id }) {
         onDelete={() => handleDeleteWorkout(id)}
         itemToBeDeleted={name}
       />
-      <Card.Root
-        width="full"
-        height="200px"
-        variant="outline"
-        display="flex"
-        flexDirection="column"
+      <Dialog.Root
+        size="cover"
+        placement="center"
+        motionPreset="slide-in-bottom"
       >
-        {/*Menu  */}
-        <Box position="absolute" top="2" right="2" zIndex="1" p="2">
-          {/*Menu on the card */}
-          <Menu.Root>
-            <Menu.Trigger asChild>
-              <Button variant="ghost" size="sm">
-                <EllipsisVertical size="22" />
-              </Button>
-            </Menu.Trigger>
-            <Portal>
-              <Menu.Positioner>
-                <Menu.Content>
-                  {/*Edit */}
-                  <Link to={`/editWorkout/${id}`}>
-                    <Menu.Item value="rename">Edit</Menu.Item>
-                  </Link>
-                  <Menu.Item
-                    value="delete"
-                    color="fg.error"
-                    _hover={{ bg: "bg.error", color: "fg.error" }}
-                    onClick={() => setIsDialogOpen(true)}
-                    colorScheme="red"
-                  >
-                    Delete...
-                  </Menu.Item>
-                </Menu.Content>
-              </Menu.Positioner>
-            </Portal>
-          </Menu.Root>
-        </Box>
-
-        <Card.Body flex="1" overflow="hidden">
-          <Card.Title mb="2">{name} </Card.Title>
-
-          {/*The exercises in the workout listed ..., ... */}
-          <Text fontSize="sm" color={secondaryTextColor}>
-            {exercises?.length > 0
-              ? exercises.map((e) => e.exercise?.name).join(", ") + "."
-              : "No exercises added"}
-          </Text>
-        </Card.Body>
-        <Card.Footer justifyContent="flex-end" mt="auto">
-          <Dialog.Root
-            size="cover"
-            placement="center"
-            motionPreset="slide-in-bottom"
+        <Dialog.Trigger asChild>
+          <Card.Root
+            width="full"
+            height="200px"
+            variant="outline"
+            display="flex"
+            flexDirection="column"
+            cursor="pointer"
+            _hover={{
+              shadow: "md",
+              bg: useColorModeValue("gray.50", "gray.700"),
+              transition: "all 0.2s",
+            }}
+            role="button"
+            aria-label={`View details for workout ${name}`}
           >
-            <Dialog.Trigger asChild>
-              <Button>Work out</Button>
-            </Dialog.Trigger>
-            {/**The dialog that opens when you click the exercise */}
-            <Portal>
-              <Dialog.Backdrop />
-              <Dialog.Positioner>
-                <Dialog.Content>
-                  <Dialog.Header>
-                    <Dialog.Title>{name}</Dialog.Title>
-                    <Dialog.CloseTrigger asChild>
-                      <CloseButton size="sm" />
-                    </Dialog.CloseTrigger>
-                  </Dialog.Header>
-                  <Dialog.Body>
-                    <Flex direction="column" gap="2" ml="6">
-                      {exercises?.length > 0 ? (
-                        <ExerciseTable exercises={exercises} />
-                      ) : (
-                        "No exercises"
-                      )}
-                    </Flex>
-                    {/*TODO* start workout button*/}
-                    <Link to={`/activeWorkout/${id}`}>
-                      <Button m="6" onClick={() => handleStartWorkout(id)}>
-                        Start Workout
-                      </Button>
-                    </Link>
-                  </Dialog.Body>
-                </Dialog.Content>
-              </Dialog.Positioner>
-            </Portal>
-          </Dialog.Root>
-        </Card.Footer>
-      </Card.Root>
+            {/*Menu  */}
+            <Box position="absolute" top="2" right="2" zIndex="1" p="2">
+              {/*Menu on the card */}
+              <Menu.Root>
+                <Menu.Trigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <EllipsisVertical size="22" />
+                  </Button>
+                </Menu.Trigger>
+                <Portal>
+                  <Menu.Positioner>
+                    <Menu.Content>
+                      {/*Edit */}
+                      <Link to={`/editWorkout/${id}`}>
+                        <Menu.Item value="rename">Edit</Menu.Item>
+                      </Link>
+                      <Menu.Item
+                        value="delete"
+                        color="fg.error"
+                        _hover={{ bg: "bg.error", color: "fg.error" }}
+                        onClick={() => setIsDialogOpen(true)}
+                        colorScheme="red"
+                      >
+                        Delete...
+                      </Menu.Item>
+                    </Menu.Content>
+                  </Menu.Positioner>
+                </Portal>
+              </Menu.Root>
+            </Box>
+
+            <Card.Body flex="1" overflow="hidden">
+              <Card.Title mb="2">{name} </Card.Title>
+
+              {/*The exercises in the workout listed ..., ... */}
+              <Text fontSize="sm" color={secondaryTextColor}>
+                {exercises?.length > 0
+                  ? exercises.map((e) => e.exercise?.name).join(", ") + "."
+                  : "No exercises added"}
+              </Text>
+            </Card.Body>
+            <Card.Footer px="4" pb="4">
+              <Flex justifyContent="flex-start"  gap="2" flexWrap="wrap">
+              <Badge>Chest: 5</Badge>
+              <Badge>Back: 5</Badge>
+              <Badge>Biceps: 10</Badge>
+              <Badge>Sholders: 10</Badge>
+              </Flex>
+            </Card.Footer>
+          </Card.Root>
+        </Dialog.Trigger>
+
+        {/**The dialog that opens when you click the exercise */}
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>{name}</Dialog.Title>
+                <Dialog.CloseTrigger asChild>
+                  <CloseButton size="sm" />
+                </Dialog.CloseTrigger>
+              </Dialog.Header>
+              <Dialog.Body>
+                <Flex direction="column" gap="2" ml="6">
+                  {exercises?.length > 0 ? (
+                    <ExerciseTable exercises={exercises} />
+                  ) : (
+                    "No exercises"
+                  )}
+                </Flex>
+                {/*TODO* start workout button*/}
+                <Link to={`/activeWorkout/${id}`}>
+                  <Button m="6" onClick={() => handleStartWorkout(id)}>
+                    Start Workout
+                  </Button>
+                </Link>
+              </Dialog.Body>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
     </Box>
   );
 }

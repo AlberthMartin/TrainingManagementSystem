@@ -1,8 +1,16 @@
-import React from "react";
-import {Text} from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 
 export default function WorkoutTimerDisplay({ seconds }) {
-    const mins = Math.floor(seconds / 60).toString().padStart(2, "0");
-    const secs = (seconds % 60).toString().padStart(2, "0");
-    return <Text fontWeight="bold"> {mins}:{secs}</Text>;
-  }
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  const formattedTime =
+    hrs > 0
+      ? `${hrs.toString().padStart(2, "0")}:${mins
+          .toString()
+          .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
+      : `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+
+  return <Text>{formattedTime}</Text>;
+}

@@ -77,6 +77,22 @@ export const useWorkoutStore = create(
           };
         }
       },
+      fetchCompletedWorkouts: async () => {
+        try{
+          const res = await fetch("/api/completedWorkouts", {
+            credentials: "include"
+          })
+
+          const data = await res.json();
+
+          set({completedWorkouts: data.data})
+        }catch (error){
+          return{
+            success: false,
+            message: error.message,
+          }
+        }
+      },
 
       fetchWorkout: async (id) => {
         try {

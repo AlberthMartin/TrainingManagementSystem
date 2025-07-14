@@ -72,12 +72,12 @@ export default function ExercisesPage() {
         </Box>
 
         {/*Headline */}
-        <Heading fontWeight="semibold" fontSize="3xl" m="4">
+        <Heading fontWeight="semibold" fontSize="3xl" m="2">
           Exercises
         </Heading>
 
         {/**Saved exercises with search function*/}
-        <SimpleGrid columns={1} p="4" gap="1">
+        <SimpleGrid columns={1} pl="4" pt="2" gap="1">
           {filteredExercises.map((exercise) => (
             <ExerciseListElement
               key={exercise._id}

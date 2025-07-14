@@ -14,7 +14,7 @@ import {
 export default function ExerciseListElement({ name, description }) {
   return (
     <Box>
-      <ButtonGroup variant="outline" attached w="full">
+      <ButtonGroup variant="subtle" attached w="full">
         {/*Avatar icon */}
         <IconButton aria-label="exercise_icon" w="auto">
           <Avatar.Root shape="square">
