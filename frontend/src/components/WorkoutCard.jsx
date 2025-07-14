@@ -28,24 +28,23 @@ export default function WorkoutCard({ name, exercises = [], id }) {
   const { deleteWorkout } = useWorkoutStore();
 
   const handleDeleteWorkout = async (id) => {
-    try{
-      await deleteWorkout(id)
+    try {
+      await deleteWorkout(id);
       console.log(`Workout ${id} deleted successfully`);
-    }catch(err){
+    } catch (err) {
       console.error("Error in handleDeleteWorkout", err);
     }
   };
 
   const handleStartWorkout = async (id) => {
-    try{
-      await setActiveWorkoutById(id)
+    try {
+      await setActiveWorkoutById(id);
       console.log(`Workout ${id} started successfully`);
-      navigate(`/activeWorkout/${id}`)
-
-    }catch(error){
+      navigate(`/activeWorkout/${id}`);
+    } catch (error) {
       console.error("Error in handleStartWorkout", error);
     }
-  }
+  };
   return (
     <Box w="full">
       {/*The Delet confirmation alert when trying to delete a workout */}
@@ -55,8 +54,13 @@ export default function WorkoutCard({ name, exercises = [], id }) {
         onDelete={() => handleDeleteWorkout(id)}
         itemToBeDeleted={name}
       />
-      <Card.Root width="full" height="200px" variant="outline" display="flex"
-  flexDirection="column">
+      <Card.Root
+        width="full"
+        height="200px"
+        variant="outline"
+        display="flex"
+        flexDirection="column"
+      >
         {/*Menu  */}
         <Box position="absolute" top="2" right="2" zIndex="1" p="2">
           {/*Menu on the card */}
@@ -99,17 +103,13 @@ export default function WorkoutCard({ name, exercises = [], id }) {
           </Text>
         </Card.Body>
         <Card.Footer justifyContent="flex-end" mt="auto">
-          <Link to={`/editWorkout/${id}`}>
-            <Button variant="outline">Edit</Button>
-          </Link>
-
           <Dialog.Root
             size="cover"
             placement="center"
             motionPreset="slide-in-bottom"
           >
             <Dialog.Trigger asChild>
-              <Button>Train</Button>
+              <Button>Work out</Button>
             </Dialog.Trigger>
             {/**The dialog that opens when you click the exercise */}
             <Portal>
@@ -132,9 +132,10 @@ export default function WorkoutCard({ name, exercises = [], id }) {
                     </Flex>
                     {/*TODO* start workout button*/}
                     <Link to={`/activeWorkout/${id}`}>
-                    <Button  m="6" onClick={() => handleStartWorkout(id)}>Start Workout</Button>
+                      <Button m="6" onClick={() => handleStartWorkout(id)}>
+                        Start Workout
+                      </Button>
                     </Link>
-
                   </Dialog.Body>
                 </Dialog.Content>
               </Dialog.Positioner>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Flex,
@@ -21,6 +21,12 @@ import {
   Folder,
   History,
 } from "lucide-react";
+import { HomeIcon as HomeOutlineIcon } from "@heroicons/react/24/outline"
+import { HomeIcon as HomeSolidIcon } from "@heroicons/react/24/solid";
+import { ClockIcon as ClockSolidIcon } from "@heroicons/react/24/solid";
+import { ClockIcon as ClockOutlineIcon } from "@heroicons/react/24/outline";
+
+
 import { useColorMode } from "@/components/ui/color-mode";
 import { useColorModeValue } from "./ui/color-mode";
 import { useAuthStore } from "@/store/userAuth";
@@ -32,13 +38,19 @@ const Navbar = () => {
   const bg = useColorModeValue("gray.100", "gray.900");
   const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
 
+  const [selectedPage, setSelectedPage] = useState(() => {
+    return localStorage.getItem("selectedPage") || "home";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("selectedPage", selectedPage);
+  }, [selectedPage]);
 
   const { logout, authUser } = useAuthStore();
 
   const handleLogOut = async () => {
     logout();
   };
-
 
   return (
     <Box
@@ -79,11 +91,16 @@ const Navbar = () => {
               mt="4"
               py="10"
               px="4"
+              
               fontSize="xs"
               _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+              onClick={() =>setSelectedPage("home")}
             >
               <VStack>
-                <House size={16} />
+                {selectedPage === "home" ? 
+                <HomeSolidIcon size={16}/> : 
+                <HomeOutlineIcon size={16} />
+                }
                 <Text>Home</Text>
               </VStack>
             </Button>
@@ -97,9 +114,13 @@ const Navbar = () => {
               px="2"
               fontSize="xs"
               _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+              onClick={() =>setSelectedPage("exercises")}
             >
               <VStack>
+                {selectedPage === "exercises" ? 
+                <Dumbbell size={16} style={{ fill: "currentColor" }}/> : 
                 <Dumbbell size={16} />
+                }
                 <Text>Exercises</Text>
               </VStack>
             </Button>
@@ -113,9 +134,13 @@ const Navbar = () => {
               px="2"
               fontSize="xs"
               _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+              onClick={() =>setSelectedPage("workouts")}
             >
               <VStack>
+                {selectedPage === "workouts" ? 
+                <Folder size={16} style={{ fill: "currentColor" }}/> : 
                 <Folder size={16} />
+                }
                 <Text>Workouts</Text>
               </VStack>
             </Button>
@@ -129,9 +154,14 @@ const Navbar = () => {
               px="4"
               fontSize="xs"
               _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+              onClick={() =>setSelectedPage("history")}
             >
               <VStack>
-                <History size={16} />
+                {selectedPage === "history" ? 
+                <ClockSolidIcon size={16} style={{ fill: "currentColor" }}/> : 
+                <ClockOutlineIcon size={16} />
+                }
+
                 <Text>History</Text>
               </VStack>
             </Button>
