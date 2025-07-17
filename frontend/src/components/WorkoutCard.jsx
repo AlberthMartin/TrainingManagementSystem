@@ -50,7 +50,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
     }
   };
   return (
-    <Box w="full">
+    <Box w="full" position="relative">
       {/*The Delete confirmation alert when trying to delete a workout */}
       <DeleteConfirmationDialog
         isOpen={isDialogOpen}
@@ -58,19 +58,44 @@ export default function WorkoutCard({ name, exercises = [], id }) {
         onDelete={() => handleDeleteWorkout(id)}
         itemToBeDeleted={name}
       />
-      <Dialog.Root
-        size="cover"
-        placement="center"
-        motionPreset="slide-in-bottom"
+
+       {/**** MENU IN TOP RIGHT OF CARD      ***********/}
+       <Box position="absolute" top="2" right="2" zIndex="10" p="2">
+          {/*Menu on the card */}
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <Button variant="ghost" size="sm">
+                <EllipsisVertical size="22" />
+              </Button>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  {/*Edit */}
+                  <Link to={`/editWorkout/${id}`}>
+                    <Menu.Item value="rename">Edit</Menu.Item>
+                  </Link>
+                  <Menu.Item
+                    value="delete"
+                    color="fg.error"
+                    _hover={{ bg: "bg.error", color: "fg.error" }}
+                    onClick={() => setIsDialogOpen(true)}
+                    colorScheme="red"
+                  >
+                    Delete...
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+        </Box>
+
+
+        {/** CARD THAT ON CLICKS OPENS A DIALOG *** */}
+      <Dialog.Root size="cover" placement="center" motionPreset="slide-in-bottom"
       >
         <Dialog.Trigger asChild>
-          <Card.Root
-            width="full"
-            height="200px"
-            variant="outline"
-            display="flex"
-            flexDirection="column"
-            cursor="pointer"
+          <Card.Root width="full" height="200px" variant="outline" display="flex" flexDirection="column"cursor="pointer"
             _hover={{
               shadow: "md",
               bg: useColorModeValue("gray.50", "gray.700"),
@@ -79,37 +104,6 @@ export default function WorkoutCard({ name, exercises = [], id }) {
             role="button"
             aria-label={`View details for workout ${name}`}
           >
-            {/*Menu  */}
-            <Box position="absolute" top="2" right="2" zIndex="1" p="2">
-              {/*Menu on the card */}
-              <Menu.Root>
-                <Menu.Trigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <EllipsisVertical size="22" />
-                  </Button>
-                </Menu.Trigger>
-                <Portal>
-                  <Menu.Positioner>
-                    <Menu.Content>
-                      {/*Edit */}
-                      <Link to={`/editWorkout/${id}`}>
-                        <Menu.Item value="rename">Edit</Menu.Item>
-                      </Link>
-                      <Menu.Item
-                        value="delete"
-                        color="fg.error"
-                        _hover={{ bg: "bg.error", color: "fg.error" }}
-                        onClick={() => setIsDialogOpen(true)}
-                        colorScheme="red"
-                      >
-                        Delete...
-                      </Menu.Item>
-                    </Menu.Content>
-                  </Menu.Positioner>
-                </Portal>
-              </Menu.Root>
-            </Box>
-
             <Card.Body flex="1" overflow="hidden">
               <Card.Title mb="2">{name} </Card.Title>
 
@@ -132,6 +126,7 @@ export default function WorkoutCard({ name, exercises = [], id }) {
             </Card.Footer>
           </Card.Root>
         </Dialog.Trigger>
+
 
         {/**The dialog that opens when you click the exercise */}
         <Portal>

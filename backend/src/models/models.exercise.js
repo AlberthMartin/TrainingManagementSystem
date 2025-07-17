@@ -9,8 +9,28 @@ const exerciseSchema = new mongoose.Schema({
     },
     description:{
         type: String,
+    },
+    primaryMuscleGroup: {
+        type: String,
+        enum: ["Chest", "Back", "Shoulders", "Arms", "Core", "Quadriceps", 
+            "Hamstrings", "Glutes", "Calves"
+        ],
         required: true
     },
+    secondaryMuscleGroup: {
+        type: String,
+        enum: ["Chest", "Back", "Shoulders", "Arms", "Core", "Quadriceps", 
+            "Hamstrings", "Glutes", "Calves"
+        ],
+        //Not really required for all exericese: ex bicep curls tricep pushdowns
+    },
+    category: {
+        type: String,
+        enum: ["Barbell", "Dumbbell", "Machine", "Bodyweight", 
+            "Assisted Bodyweight", "Cardio", "Duration"],
+        required: true,
+    },
+
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null }
 
     }, {

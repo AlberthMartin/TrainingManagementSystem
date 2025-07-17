@@ -9,7 +9,9 @@ export const useExerciseStore = create((set) => ({
     
     createExercise: async(newExercise) => {
         //Validates exercise object
-        if(!newExercise.name || !newExercise.description){
+        if(!newExercise.name || !newExercise.primaryMuscleGroup
+            || !newExercise.category
+        ){
             return {success: false, message:"Please fill in all fields"}
         }
         //POST JSON request to backend

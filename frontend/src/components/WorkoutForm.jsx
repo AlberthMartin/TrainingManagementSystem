@@ -1,18 +1,4 @@
-import {
-  Portal,
-  Flex,
-  InputGroup,
-  CloseButton,
-  ButtonGroup,
-  IconButton,
-  Avatar,
-  Container,
-  Box,
-  Input,
-  Heading,
-  Button,
-  Stack,
-  Dialog,
+import {Portal, Flex, InputGroup, CloseButton, ButtonGroup, IconButton, Avatar, Container, Box, Input, Heading, Button, Stack, Dialog,
 } from "@chakra-ui/react";
 import React from "react";
 import { useColorModeValue } from "../components/ui/color-mode";
@@ -25,8 +11,9 @@ import { Plus, Search, X } from "lucide-react";
 import DisplayExerciseInWorkout from "@/components/DisplayExerciseInWorkout";
 import { useCompleteWorkoutsStore } from "@/store/completedWorkouts";
 import { useActiveWorkoutStore } from "@/store/activeWorkout";
+import { createToaster } from "@chakra-ui/react";
 
-//Supports editing of workout, creating of workout and logging active workout
+//This file is responsible for UI rendering of 3 pages create, edit and log workout
 //mode === "edit" "create" "log" reflects the UI
 export default function WorkoutForm({ workoutId, mode = "create" }) {
   const inputFieldColor = useColorModeValue("white", "gray.700");

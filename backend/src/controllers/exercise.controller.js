@@ -34,11 +34,12 @@ export const getExercises = async (req, res) =>{
     }
 }
 export const createExercise = async (req, res) =>{
+    try{
     //The exercise sent as JSON from frontend
     const exercise = req.body;
 
     //Simple validation
-    if(!exercise.name || !exercise.description){
+    if(!exercise.name || !exercise.primaryMuscleGroup || !exercise.category){
         return res.status(400).json({
             success:false,
             message: "Fill in all fields"
@@ -47,11 +48,14 @@ export const createExercise = async (req, res) =>{
     //Creates the exercise with mongoose
     const newExercise = new Exercise({
         name: exercise.name,
-        description: exercise.description,
-        createdBy: req.user._id
+        description: exercise.description || "",
+        createdBy: req.user._id,
+        primaryMuscleGroup: exercise.primaryMuscleGroup[0],
+        secondaryMuscleGroup: exercise.secondaryMuscleGroup[0] || "",
+        category: exercise.category[0]
     })
 
-    try{
+  
         //Saves the exercise in the database
         newExercise.save()
         //Responds with the added exercise as JSON (+success: true)
