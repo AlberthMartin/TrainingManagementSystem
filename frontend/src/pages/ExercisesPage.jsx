@@ -79,6 +79,8 @@ export default function ExercisesPage() {
               key={exercise._id}
               name={exercise.name}
               description={exercise.description}
+              primaryMuscleGroup={exercise.primaryMuscleGroup}
+              secondaryMuscleGroup={exercise.secondaryMuscleGroup}
             />
           ))}
         </SimpleGrid>

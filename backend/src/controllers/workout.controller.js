@@ -1,5 +1,6 @@
 import Workout from "../models/workout.model.js";
 import mongoose from "mongoose";
+import { getMuscleGroupVolumeForWorkout } from "../services/workoutStats.service.js";
 
 //Workouts Backend API, to communicate with MongoDB
 
@@ -55,12 +56,10 @@ export const createWorkout = async (req, res) => {
 
     for (const ex of exercises) {
       if (!ex.exercise || !Array.isArray(ex.sets)) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Each exercise must have a valid ID and an array of sets",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "Each exercise must have a valid ID and an array of sets",
+        });
       }
     }
 
@@ -70,9 +69,14 @@ export const createWorkout = async (req, res) => {
       user: req.user._id,
     });
 
+    //Calculate stats for new workout
+
+    const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(newWorkout);
+    newWorkout.muscleGroupVolume = muscleGroupVolume;
+
     await newWorkout.save();
 
-    res.status(200).json({ success: true, data: newWorkout });
+    await res.status(200).json({ success: true, data: newWorkout });
   } catch (error) {
     console.log("Error in createWorkout", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
@@ -90,13 +94,11 @@ export const deleteWorkout = async (req, res) => {
     }
 
     const deletedWorkout = await Workout.findByIdAndDelete(id);
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: deletedWorkout,
-        message: "Workout deleted",
-      });
+    res.status(200).json({
+      success: true,
+      data: deletedWorkout,
+      message: "Workout deleted",
+    });
   } catch (error) {
     console.log("Error in deleteWorkout", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
@@ -115,16 +117,22 @@ export const updateWorkout = async (req, res) => {
         .json({ success: false, message: "Invalid workout Id" });
     }
 
-    const updatedWorkout = await Workout.findByIdAndUpdate(id, workout, {
-      new: true,
+    const workoutDoc = await Workout.findById(id).populate(
+      "exercises.exercise"
+    );
+    // Apply updates
+    workoutDoc.set(workout);
+    // Calculate muscle group volume using the populated document
+    const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(workoutDoc);
+    workoutDoc.muscleGroupVolume = muscleGroupVolume;
+
+    const updatedWorkout = await workoutDoc.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Workout updated",
+      data: updatedWorkout,
     });
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Workout updated",
-        data: updatedWorkout,
-      });
   } catch (error) {
     console.error("Error in updateWorkout", error.message);
     res.status(500).json({ success: false, message: "Server Error" });

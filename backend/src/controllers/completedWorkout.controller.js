@@ -1,5 +1,6 @@
 import CompletedWorkout from "../models/completedWorkout.model.js";
 import mongoose from "mongoose";
+import { getMuscleGroupVolumeForWorkout } from "../services/workoutStats.service.js";
 
 //Backend API for completed Workouts for a user
 //CRUD
@@ -56,6 +57,13 @@ export const saveCompletedWorkout = async (req, res) => {
       completedAt,
     });
 
+    //Calculate the stats for the workout ////
+    const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(
+      savedWorkout
+    );
+
+    savedWorkout.muscleGroupVolume = muscleGroupVolume;
+
     await savedWorkout.save();
 
     res.status(200).json({ success: true, data: savedWorkout });
@@ -91,7 +99,6 @@ export const deleteCompletedWorkout = async (req, res) => {
 export const updateCompletedWorkout = async (req, res) => {
   try {
     const { id } = req.params;
-
     const completedWorkout = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -99,16 +106,28 @@ export const updateCompletedWorkout = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Invalid completed workout Id" });
     }
-
-    const updatedCompletedWorkout = await CompletedWorkout.findByIdAndUpdate(
-      id,
-      completedWorkout,
-      { new: true }
+    const workoutDoc = await CompletedWorkout.findById(id).populate(
+      "exercises.exercise"
     );
+
+     // Check if workout exists
+     if (!workoutDoc) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Completed workout not found" });
+    }
+     // Apply updates
+    workoutDoc.set(completedWorkout);
+
+    // Recalculate volume
+    const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(workoutDoc);
+    workoutDoc.muscleGroupVolume = muscleGroupVolume;
+    const updatedWorkout = await workoutDoc.save();
+
     res.status(200).json({
       success: true,
       message: "Completed workout updated",
-      data: updatedCompletedWorkout,
+      data: updatedWorkout,
     });
   } catch (error) {
     console.log("Error in updateCompletedWorkout", error.message);

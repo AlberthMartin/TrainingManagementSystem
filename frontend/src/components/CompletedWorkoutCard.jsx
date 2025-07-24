@@ -37,17 +37,17 @@ export default function CompletedWorkoutCard({name, exercises, workoutTemplate, 
       </Card.Body>
       <Card.Footer px="4" pb="4">
         <Flex justifyContent="flex-start"  gap="2" flexWrap="wrap">
-          <Badge variant="subtle">
+          <Badge variant="subtle" colorPalette="blue">
             <Clock size={14} />
             <WorkoutTimerDisplay seconds={duration} />
           </Badge>
           {/*TODO: Make something that can calculate this stats 
         when completing a workout*/}
-          <Badge variant="subtle">
+          <Badge variant="subtle" colorPalette="green">
             <Weight size={14} />
             Volume
           </Badge>
-          <Badge variant="subtle">
+          <Badge variant="subtle" colorPalette="yellow">
             <Medal size={14} />2 PR
           </Badge>
         </Flex>

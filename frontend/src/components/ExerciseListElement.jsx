@@ -7,11 +7,18 @@ import {
   CloseButton,
   Dialog,
   Portal,
-  Box
+  Box,
+  Badge,
+  Text,
 } from "@chakra-ui/react";
 
 //Add tags for the mucsle groups worked
-export default function ExerciseListElement({ name, description }) {
+export default function ExerciseListElement({
+  name,
+  description,
+  primaryMuscleGroup = [],
+  secondaryMuscleGroup = [],
+}) {
   return (
     <Box>
       <ButtonGroup variant="subtle" attached w="full">
@@ -44,7 +51,15 @@ export default function ExerciseListElement({ name, description }) {
                     <CloseButton size="sm" />
                   </Dialog.CloseTrigger>
                 </Dialog.Header>
-                <Dialog.Body>{description}</Dialog.Body>
+                <Dialog.Body>
+                  {description}
+
+                  {/* Badges for muscles */}
+                  <Box display="flex" gap="2" flexWrap="wrap">
+                    {primaryMuscleGroup ?? <Badge colorPalette="blue">{primaryMuscleGroup}</Badge>}
+                    {secondaryMuscleGroup ?? <Badge colorPalette="purple" variant="subtle">{secondaryMuscleGroup}</Badge>}
+                  </Box>
+                </Dialog.Body>
               </Dialog.Content>
             </Dialog.Positioner>
           </Portal>

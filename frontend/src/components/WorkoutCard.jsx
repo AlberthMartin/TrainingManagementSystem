@@ -20,7 +20,7 @@ import { useColorModeValue } from "../components/ui/color-mode";
 import { EllipsisVertical } from "lucide-react";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 
-export default function WorkoutCard({ name, exercises = [], id }) {
+export default function WorkoutCard({ name, exercises = [], id, data }) {
   const secondaryTextColor = useColorModeValue("gray.700", "gray.400");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -59,43 +59,51 @@ export default function WorkoutCard({ name, exercises = [], id }) {
         itemToBeDeleted={name}
       />
 
-       {/**** MENU IN TOP RIGHT OF CARD      ***********/}
-       <Box position="absolute" top="2" right="2" zIndex="10" p="2">
-          {/*Menu on the card */}
-          <Menu.Root>
-            <Menu.Trigger asChild>
-              <Button variant="ghost" size="sm">
-                <EllipsisVertical size="22" />
-              </Button>
-            </Menu.Trigger>
-            <Portal>
-              <Menu.Positioner>
-                <Menu.Content>
-                  {/*Edit */}
-                  <Link to={`/editWorkout/${id}`}>
-                    <Menu.Item value="rename">Edit</Menu.Item>
-                  </Link>
-                  <Menu.Item
-                    value="delete"
-                    color="fg.error"
-                    _hover={{ bg: "bg.error", color: "fg.error" }}
-                    onClick={() => setIsDialogOpen(true)}
-                    colorScheme="red"
-                  >
-                    Delete...
-                  </Menu.Item>
-                </Menu.Content>
-              </Menu.Positioner>
-            </Portal>
-          </Menu.Root>
-        </Box>
+      {/**** MENU IN TOP RIGHT OF CARD      ***********/}
+      <Box position="absolute" top="2" right="2" zIndex="10" p="2">
+        {/*Menu on the card */}
+        <Menu.Root>
+          <Menu.Trigger asChild>
+            <Button variant="ghost" size="sm">
+              <EllipsisVertical size="22" />
+            </Button>
+          </Menu.Trigger>
+          <Portal>
+            <Menu.Positioner>
+              <Menu.Content>
+                {/*Edit */}
+                <Link to={`/editWorkout/${id}`}>
+                  <Menu.Item value="rename">Edit</Menu.Item>
+                </Link>
+                <Menu.Item
+                  value="delete"
+                  color="fg.error"
+                  _hover={{ bg: "bg.error", color: "fg.error" }}
+                  onClick={() => setIsDialogOpen(true)}
+                  colorScheme="red"
+                >
+                  Delete...
+                </Menu.Item>
+              </Menu.Content>
+            </Menu.Positioner>
+          </Portal>
+        </Menu.Root>
+      </Box>
 
-
-        {/** CARD THAT ON CLICKS OPENS A DIALOG *** */}
-      <Dialog.Root size="cover" placement="center" motionPreset="slide-in-bottom"
+      {/** CARD THAT ON CLICKS OPENS A DIALOG *** */}
+      <Dialog.Root
+        size="cover"
+        placement="center"
+        motionPreset="slide-in-bottom"
       >
         <Dialog.Trigger asChild>
-          <Card.Root width="full" height="200px" variant="outline" display="flex" flexDirection="column"cursor="pointer"
+          <Card.Root
+            width="full"
+            height="200px"
+            variant="outline"
+            display="flex"
+            flexDirection="column"
+            cursor="pointer"
             _hover={{
               shadow: "md",
               bg: useColorModeValue("gray.50", "gray.700"),
@@ -118,15 +126,17 @@ export default function WorkoutCard({ name, exercises = [], id }) {
               <Flex justifyContent="flex-start" gap="2" flexWrap="wrap">
                 {/*TODO: Make this render from workout info that is created when a 
               workout is made or edited */}
-                <Badge>Chest: 5</Badge>
-                <Badge>Back: 5</Badge>
-                <Badge>Biceps: 10</Badge>
-                <Badge>Sholders: 10</Badge>
+                {Object.entries(data.muscleGroupVolume).map(
+                  ([muscle, sets]) => (
+                    <Badge key={muscle} colorPalette="green">
+                      {muscle}: {sets}
+                    </Badge>
+                  )
+                )}
               </Flex>
             </Card.Footer>
           </Card.Root>
         </Dialog.Trigger>
-
 
         {/**The dialog that opens when you click the exercise */}
         <Portal>

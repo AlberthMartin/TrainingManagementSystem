@@ -12,14 +12,14 @@ const exerciseSchema = new mongoose.Schema({
     },
     primaryMuscleGroup: {
         type: String,
-        enum: ["Chest", "Back", "Shoulders", "Arms", "Core", "Quadriceps", 
+        enum: ["Chest", "Back", "Shoulders", "Triceps", "Biceps", "Forearms", "Core", "Quadriceps", 
             "Hamstrings", "Glutes", "Calves"
         ],
         required: true
     },
     secondaryMuscleGroup: {
         type: String,
-        enum: ["Chest", "Back", "Shoulders", "Arms", "Core", "Quadriceps", 
+        enum: ["Chest", "Back", "Shoulders", "Triceps", "Biceps", "Forearms", "Core", "Quadriceps", 
             "Hamstrings", "Glutes", "Calves"
         ],
         //Not really required for all exericese: ex bicep curls tricep pushdowns

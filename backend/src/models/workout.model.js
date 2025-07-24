@@ -44,6 +44,19 @@ const workoutSchema = new mongoose.Schema(
         ],
       },
     ],
+    summary: {
+      totalSets: Number,
+      totalReps: Number,
+      totalVolume: Number,
+      mainMuscleGroups: [String],
+      fastestTimeToFinnishWorkout: Number, //Set count + Rest time
+    },
+    muscleGroupVolume: {
+      type: Map,
+      of: Number,
+      default: {},
+    }
+
   },
   {
     timestamps: true,
