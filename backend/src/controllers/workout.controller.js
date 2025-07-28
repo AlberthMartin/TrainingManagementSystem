@@ -1,6 +1,6 @@
 import Workout from "../models/workout.model.js";
 import mongoose from "mongoose";
-import { getMuscleGroupVolumeForWorkout } from "../services/workoutStats.service.js";
+import { getMuscleGroupVolumeForWorkout, getTotalSets, getTotalVolume } from "../services/workoutStats.service.js";
 
 //Workouts Backend API, to communicate with MongoDB
 
@@ -70,9 +70,11 @@ export const createWorkout = async (req, res) => {
     });
 
     //Calculate stats for new workout
-
     const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(newWorkout);
+    const totalSets = await getTotalSets(newWorkout);
+    
     newWorkout.muscleGroupVolume = muscleGroupVolume;
+    newWorkout.summary.totalSets = totalSets
 
     await newWorkout.save();
 
@@ -122,9 +124,13 @@ export const updateWorkout = async (req, res) => {
     );
     // Apply updates
     workoutDoc.set(workout);
+    
     // Calculate muscle group volume using the populated document
     const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(workoutDoc);
+    const totalSets = await getTotalSets(workoutDoc);
+    
     workoutDoc.muscleGroupVolume = muscleGroupVolume;
+    workoutDoc.summary.totalSets = totalSets;
 
     const updatedWorkout = await workoutDoc.save();
 

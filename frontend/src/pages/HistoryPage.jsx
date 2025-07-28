@@ -17,9 +17,10 @@ export default function HistoryPage() {
   return (
     <Box ml="20">
       <Stack>
-        {/*Top Taskbar */}
+        {/*Top Taskbar
         <Box position="sticky" top="0" zIndex="sticky" shadow="md" py="4"></Box>
-        <Heading m="4" fontSize="xl">
+        */}
+        <Heading fontWeight="semibold" fontSize="3xl" m="4">
           History
         </Heading>
         <CardGrid>
@@ -32,6 +33,7 @@ export default function HistoryPage() {
               exercises={cw.exercises}
               duration={cw.duration}
               completedAt={cw.completedAt}
+              data={cw} //All data
             />
           ))}
         </CardGrid>

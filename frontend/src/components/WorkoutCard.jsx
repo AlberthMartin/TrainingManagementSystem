@@ -1,4 +1,3 @@
-import { Button, Card } from "@chakra-ui/react";
 import {
   Text,
   Flex,
@@ -8,6 +7,8 @@ import {
   Portal,
   Menu,
   Badge,
+  Button,
+  Card,
 } from "@chakra-ui/react";
 import ExerciseTable from "./ExerciseTable";
 import React from "react";
@@ -73,7 +74,7 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
               <Menu.Content>
                 {/*Edit */}
                 <Link to={`/editWorkout/${id}`}>
-                  <Menu.Item value="rename">Edit</Menu.Item>
+                  <Menu.Item value="edit">Edit</Menu.Item>
                 </Link>
                 <Menu.Item
                   value="delete"
@@ -90,7 +91,7 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
         </Menu.Root>
       </Box>
 
-      {/** CARD THAT ON CLICKS OPENS A DIALOG *** */}
+      {/** WORKOUT CARD THAT ON CLICKS OPENS INFO ABOUT WORKOUT *** */}
       <Dialog.Root
         size="cover"
         placement="center"
@@ -106,7 +107,7 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
             cursor="pointer"
             _hover={{
               shadow: "md",
-              bg: useColorModeValue("gray.50", "gray.700"),
+              bg: useColorModeValue("gray.50", "gray.900"),
               transition: "all 0.2s",
             }}
             role="button"
@@ -123,17 +124,17 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
               </Text>
             </Card.Body>
             <Card.Footer px="4" pb="4">
-              <Flex justifyContent="flex-start" gap="2" flexWrap="wrap">
-                {/*TODO: Make this render from workout info that is created when a 
-              workout is made or edited */}
-                {Object.entries(data.muscleGroupVolume).map(
-                  ([muscle, sets]) => (
-                    <Badge key={muscle} colorPalette="green">
-                      {muscle}: {sets}
-                    </Badge>
-                  )
-                )}
-              </Flex>
+              <Box w="full">
+                <Flex justifyContent="flex-start" gap="2" flexWrap="wrap">
+                  {Object.entries(data.muscleGroupVolume).map(
+                    ([muscle, volume]) => (
+                      <Badge key={muscle} colorPalette="green">
+                        {muscle}: {volume}
+                      </Badge>
+                    )
+                  )}
+                </Flex>
+              </Box>
             </Card.Footer>
           </Card.Root>
         </Dialog.Trigger>
@@ -156,6 +157,17 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
                   ) : (
                     "No exercises"
                   )}
+
+                  <Text my="2">Training Volume</Text>
+                  <Flex justifyContent="flex-start" gap="2" flexWrap="wrap">
+                  {Object.entries(data.muscleGroupVolume).map(
+                    ([muscle, volume]) => (
+                      <Badge key={muscle} colorPalette="green">
+                        {muscle}: {volume}
+                      </Badge>
+                    )
+                  )}
+                </Flex>
                 </Flex>
                 {/*TODO* start workout button*/}
                 <Link to={`/activeWorkout/${id}`}>

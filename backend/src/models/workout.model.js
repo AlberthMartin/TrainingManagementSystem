@@ -46,7 +46,6 @@ const workoutSchema = new mongoose.Schema(
     ],
     summary: {
       totalSets: Number,
-      totalVolume: Number, //Toal Lifted volume
     },
     muscleGroupVolume: {
       type: Map,

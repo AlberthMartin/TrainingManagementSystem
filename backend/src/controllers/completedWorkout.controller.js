@@ -1,6 +1,6 @@
 import CompletedWorkout from "../models/completedWorkout.model.js";
 import mongoose from "mongoose";
-import { getMuscleGroupVolumeForWorkout } from "../services/workoutStats.service.js";
+import { getMuscleGroupVolumeForWorkout, getTotalSets, getTotalVolume } from "../services/workoutStats.service.js";
 
 //Backend API for completed Workouts for a user
 //CRUD
@@ -9,7 +9,8 @@ export const getCompletedWorkouts = async (req, res) => {
   try {
     const completedWorkouts = await CompletedWorkout.find({
       user: req.user._id,
-    }).populate("exercises.exercise");
+    }).sort({ completedAt: -1 })
+    .populate("exercises.exercise");
 
     res.status(200).json({ success: true, data: completedWorkouts });
   } catch (error) {
@@ -58,11 +59,13 @@ export const saveCompletedWorkout = async (req, res) => {
     });
 
     //Calculate the stats for the workout ////
-    const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(
-      savedWorkout
-    );
+    const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(savedWorkout);
+    const totalSets = await getTotalSets(savedWorkout)
+    const totalVolume = await getTotalVolume(savedWorkout)
 
     savedWorkout.muscleGroupVolume = muscleGroupVolume;
+    savedWorkout.summary.totalSets = totalSets;
+    savedWorkout.summary.totalVolume = totalVolume
 
     await savedWorkout.save();
 
@@ -121,7 +124,13 @@ export const updateCompletedWorkout = async (req, res) => {
 
     // Recalculate volume
     const muscleGroupVolume = await getMuscleGroupVolumeForWorkout(workoutDoc);
+    const totalSets = await getTotalSets(workoutDoc);
+    const totalVolume = await getTotalVolume(workoutDoc);
+
     workoutDoc.muscleGroupVolume = muscleGroupVolume;
+    workoutDoc.summary.totalSets = totalSets;
+    workoutDoc.summary.totalVolume = totalVolume;
+
     const updatedWorkout = await workoutDoc.save();
 
     res.status(200).json({

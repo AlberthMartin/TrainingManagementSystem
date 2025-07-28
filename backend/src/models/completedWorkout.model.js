@@ -52,7 +52,6 @@ const completedWorkoutSchema = new mongoose.Schema(
     summary: {
       totalSets: Number,
       totalVolume: Number,
-      mainMuscleGroups: [String], // Two most worked muscles
     },
     muscleGroupVolume: {
       type: Map,
