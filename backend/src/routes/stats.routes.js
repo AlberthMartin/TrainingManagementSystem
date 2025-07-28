@@ -1,14 +1,16 @@
 import express from "express";
 import { protectRoute } from "../middleware/auth.middleware.js";
 import {
-  getWeeklyVolume,
-  getCompletedWorkoutSetsPerMuscleGroup,
+  getWeeklyVolumePerMuscle,
   getWorkoutTemplateSetsPerMuscleGroup,
+  getWorkoutTemplateTotalSets,
+  getCompletedWorkoutSetsPerMuscleGroup,
+  getWorkoutTemplateTotalVolume
 } from "../controllers/stats.controller.js";
 
 const router = express.Router();
 
-router.get("/weekly-volume", protectRoute, getWeeklyVolume);
+router.get("/weekly-volume", protectRoute, getWeeklyVolumePerMuscle);
 router.get(
   "/completed-workout-sets-per-muscle-group/:id",
   protectRoute,
@@ -19,5 +21,15 @@ router.get(
   protectRoute,
   getWorkoutTemplateSetsPerMuscleGroup
 );
+router.get(
+  "/workout-template-total-volume/:id",
+  protectRoute,
+  getWorkoutTemplateTotalVolume
+);
+router.get(
+  "/workout-template-total-sets/:id",
+  protectRoute,
+  getWorkoutTemplateTotalSets
+)
 
 export default router;
