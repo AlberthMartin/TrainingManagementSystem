@@ -128,14 +128,14 @@ export const getWeeklyMuscleGroupVolume = async (userId) => {
           if (exercise.primaryMuscleGroup) {
             const muscle = exercise.primaryMuscleGroup;
             weeklyVolume[weekKey][muscle] =
-              (weeklyVolume[weekKey][muscle] || 0) + volume * 1;
+              (weeklyVolume[weekKey][muscle] || 0) + volume ;
           }
 
           // Secondary
           if (exercise.secondaryMuscleGroup) {
             const muscle = exercise.secondaryMuscleGroup;
             weeklyVolume[weekKey][muscle] =
-              (weeklyVolume[weekKey][muscle] || 0) + volume * 0.5;
+              (weeklyVolume[weekKey][muscle] || 0) + volume ;
           }
         }
       }

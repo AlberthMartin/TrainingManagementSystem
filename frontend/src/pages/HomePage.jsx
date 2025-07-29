@@ -1,6 +1,7 @@
 import { Box, Stack, Heading, Text } from "@chakra-ui/react"
 import React from 'react'
 import { useAuthStore } from "@/store/userAuth"
+import VolumeCard from "@/components/VolumeCard";
 
 export default function HomePage() {
 
@@ -12,15 +13,7 @@ export default function HomePage() {
         <Heading>
             Hi {authUser?.name || "User"}
         </Heading>
-        <Text>
-            Dashboard...
-        </Text>
-        <Text>
-            Challanges
-        </Text>
-        <Text>
-            PR progression
-        </Text>
+        <VolumeCard/>
       </Stack>
     </Box>
   )
