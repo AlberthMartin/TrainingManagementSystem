@@ -75,7 +75,7 @@ export default function CompletedWorkoutCard({
         <Dialog.Trigger asChild>
           <Card.Root
             width="full"
-            height="250px"
+            minHeight="320px"
             variant="outline"
             display="flex"
             flexDirection="column"
