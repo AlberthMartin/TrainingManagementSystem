@@ -1,5 +1,16 @@
 import React from "react";
-import { Box, Card, Text, Badge, Flex, Menu, CloseButton, Dialog, Button, Portal } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  Text,
+  Badge,
+  Flex,
+  Menu,
+  CloseButton,
+  Dialog,
+  Button,
+  Portal,
+} from "@chakra-ui/react";
 import WorkoutTimerDisplay from "./WorkoutTimerDisplay";
 import { Clock, Weight, Medal } from "lucide-react";
 import { useState } from "react";
@@ -8,6 +19,7 @@ import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 import { EllipsisVertical } from "lucide-react";
 import { useColorModeValue } from "../components/ui/color-mode";
 import ExerciseTable from "./ExerciseTable";
+import { useCompleteWorkoutsStore } from "@/store/completedWorkouts";
 
 export default function CompletedWorkoutCard({
   name,
@@ -22,8 +34,18 @@ export default function CompletedWorkoutCard({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
 
+  const { deleteCompletedWorkout } = useCompleteWorkoutsStore();
+
   //TODO DELETE COMPLETED WORKOUT USE store
-  const handleDeleteCompletedWorkout = async (id) => {};
+  const handleDeleteCompletedWorkout = async (id) => {
+    try {
+
+      await deleteCompletedWorkout(id);
+      console.log(`Completed workout ${id} deleted successfully`);
+    } catch (error) {
+      console.error("Error inhandle DeleteCompletedWorkout", err);
+    }
+  };
 
   return (
     <Box w="full" position="relative">
@@ -31,7 +53,7 @@ export default function CompletedWorkoutCard({
       <DeleteConfirmationDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        onDelete={() => handleDeleteWorkout(id)}
+        onDelete={() => handleDeleteCompletedWorkout(id)}
         itemToBeDeleted={name}
       />
 
@@ -48,9 +70,7 @@ export default function CompletedWorkoutCard({
             <Menu.Positioner>
               <Menu.Content>
                 {/*Edit */}
-                <Link to={``}>
-                  <Menu.Item value="edit">Edit</Menu.Item>
-                </Link>
+                
                 <Menu.Item
                   value="delete"
                   color="fg.error"
