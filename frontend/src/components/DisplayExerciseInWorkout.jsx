@@ -47,12 +47,13 @@ export default function DisplayExerciseInWorkout({
                       exerciseId,
                       i,
                       "weight",
-                      e.target.value === "" ? "" : Number(e.target.value)
+                      e.target.value === "" ? "" : Math.max(0, Number(e.target.value))
                     )
                   }
                   placeholder="kg"
                   variant="subtle"
                   type="number"
+                  min="0"
                 />
               </Table.Cell>
               <Table.Cell>
@@ -64,12 +65,13 @@ export default function DisplayExerciseInWorkout({
                       exerciseId,
                       i,
                       "reps",
-                      e.target.value === "" ? "" : Number(e.target.value)
+                      e.target.value === "" ? "" : Math.max(0, Number(e.target.value)) 
                     )
                   }
                   placeholder="reps"
                   variant="subtle"
                   type="number"
+                  min="0"
                 />
               </Table.Cell>
               <Table.Cell>
