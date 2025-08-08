@@ -71,6 +71,7 @@ export default function CompletedWorkoutCard({
         size="cover"
         placement="center"
         motionPreset="slide-in-bottom"
+        scrollBehavior="inside"
       >
         <Dialog.Trigger asChild>
           <Card.Root
