@@ -84,6 +84,8 @@ A modern, full-featured training management system built using the **MERN stack*
 - **Database**: MongoDB  
 - **Authentication**: JSON Web Tokens (JWT)
 
+- **Database testing**: Postman
+
 
 ## Setup Instructions
 
