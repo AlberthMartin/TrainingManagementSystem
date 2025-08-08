@@ -12,6 +12,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { ChevronRight } from "lucide-react";
+
 //Add tags for the mucsle groups worked
 export default function ExerciseListElement({
   name,
@@ -36,11 +38,13 @@ export default function ExerciseListElement({
           motionPreset="slide-in-bottom"
         >
           <Dialog.Trigger asChild>
-            <Button height="10" w="full" justifyContent="start" p="4" pl="6">
+            <Button height="10" flex="1" justifyContent="space-between" p="4" pl="6">
               {name}
+               <ChevronRight />
             </Button>
             {/**The dialog that opens when you click the exercise */}
           </Dialog.Trigger>
+
           <Portal>
             <Dialog.Backdrop />
             <Dialog.Positioner>
@@ -56,8 +60,14 @@ export default function ExerciseListElement({
 
                   {/* Badges for muscles */}
                   <Box display="flex" gap="2" flexWrap="wrap">
-                    {primaryMuscleGroup ?? <Badge colorPalette="blue">{primaryMuscleGroup}</Badge>}
-                    {secondaryMuscleGroup ?? <Badge colorPalette="purple" variant="subtle">{secondaryMuscleGroup}</Badge>}
+                    {primaryMuscleGroup ?? (
+                      <Badge colorPalette="blue">{primaryMuscleGroup}</Badge>
+                    )}
+                    {secondaryMuscleGroup ?? (
+                      <Badge colorPalette="purple" variant="subtle">
+                        {secondaryMuscleGroup}
+                      </Badge>
+                    )}
                   </Box>
                 </Dialog.Body>
               </Dialog.Content>

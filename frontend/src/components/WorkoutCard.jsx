@@ -161,14 +161,14 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
 
                   <Text my="2">Training Volume</Text>
                   <Flex justifyContent="flex-start" gap="2" flexWrap="wrap">
-                  {Object.entries(data.muscleGroupVolume).map(
-                    ([muscle, volume]) => (
-                      <Badge key={muscle} colorPalette="green">
-                        {muscle}: {volume}
-                      </Badge>
-                    )
-                  )}
-                </Flex>
+                    {Object.entries(data.muscleGroupVolume).map(
+                      ([muscle, volume]) => (
+                        <Badge key={muscle} colorPalette="green">
+                          {muscle}: {volume}
+                        </Badge>
+                      )
+                    )}
+                  </Flex>
                 </Flex>
                 {/*TODO* start workout button*/}
                 <Link to={`/activeWorkout/${id}`}>
