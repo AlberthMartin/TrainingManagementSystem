@@ -216,6 +216,13 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
     setOpen(false); //Closes the dialog after exercise is added
   };
 
+  const handleRemoveExercise = async (exerciseId) => {
+    setFormData((prev) => ({
+      ...prev,
+        exercises: prev.exercises.filter((ex) => ex.exercise !== exerciseId)
+    })) 
+  }
+
   const addSetToExercise = (exerciseId) => {
     try {
       setFormData((prev) => ({
@@ -325,6 +332,7 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
                         onAddSet={addSetToExercise}
                         onRemoveSet={removeSetFromExercise}
                         onUpdateSetValue={updateSetValue}
+                        onRemoveExercise={handleRemoveExercise}
                         mode
                       />
                     </Box>

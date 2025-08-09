@@ -1,5 +1,5 @@
 import React from "react";
-import { VStack, Text, HStack, Table, Input, Button } from "@chakra-ui/react";
+import { VStack, Text, HStack, Table, Input, Button, Menu, Portal } from "@chakra-ui/react";
 import { EllipsisVertical } from "lucide-react";
 
 export default function DisplayExerciseInWorkout({
@@ -9,16 +9,36 @@ export default function DisplayExerciseInWorkout({
   onAddSet,
   onRemoveSet,
   onUpdateSetValue,
+  onRemoveExercise, //handleRemoveExercise(exerciseId)
   mode, //create, edit, log
 }) {
   return (
     <VStack>
       <HStack justify="space-between" w="full">
         <Text fontWeight="medium">{name}</Text>
-        <Button variant="ghost">
-          {" "}
-          <EllipsisVertical />{" "}
-        </Button>
+        <Menu.Root>
+          <Menu.Trigger asChild>
+            <Button variant="ghost" size="sm">
+              {" "}
+              <EllipsisVertical />{" "}
+            </Button>
+          </Menu.Trigger>
+          <Portal>
+            <Menu.Positioner>
+              <Menu.Content>
+                <Menu.Item
+                  value="delete"
+                  color="fg.error"
+                  _hover={{ bg: "bg.error", color: "fg.error" }}
+                  onClick={() => onRemoveExercise(exerciseId)}
+                  colorScheme="red"
+                >
+                  Delete...
+                </Menu.Item>
+              </Menu.Content>
+            </Menu.Positioner>
+          </Portal>
+        </Menu.Root>
       </HStack>
 
       <Table.Root size="sm">
@@ -47,7 +67,9 @@ export default function DisplayExerciseInWorkout({
                       exerciseId,
                       i,
                       "weight",
-                      e.target.value === "" ? "" : Math.max(0, Number(e.target.value))
+                      e.target.value === ""
+                        ? ""
+                        : Math.max(0, Number(e.target.value))
                     )
                   }
                   placeholder="kg"
@@ -65,7 +87,9 @@ export default function DisplayExerciseInWorkout({
                       exerciseId,
                       i,
                       "reps",
-                      e.target.value === "" ? "" : Math.max(0, Number(e.target.value)) 
+                      e.target.value === ""
+                        ? ""
+                        : Math.max(0, Number(e.target.value))
                     )
                   }
                   placeholder="reps"

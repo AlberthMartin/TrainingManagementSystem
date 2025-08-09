@@ -23,7 +23,8 @@ import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 
 export default function WorkoutCard({ name, exercises = [], id, data }) {
   const secondaryTextColor = useColorModeValue("gray.700", "gray.400");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteWorkoutDialogOpen, setIsDeleteWorkoutDialogOpen] =
+    useState(false);
   const navigate = useNavigate();
 
   const setActiveWorkoutById = useActiveWorkoutStore(
@@ -54,8 +55,8 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
     <Box w="full" position="relative">
       {/*The Delete confirmation alert when trying to delete a workout */}
       <DeleteConfirmationDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        isOpen={isDeleteWorkoutDialogOpen}
+        onClose={() => setIsDeleteWorkoutDialogOpen(false)}
         onDelete={() => handleDeleteWorkout(id)}
         itemToBeDeleted={name}
       />
@@ -80,7 +81,7 @@ export default function WorkoutCard({ name, exercises = [], id, data }) {
                   value="delete"
                   color="fg.error"
                   _hover={{ bg: "bg.error", color: "fg.error" }}
-                  onClick={() => setIsDialogOpen(true)}
+                  onClick={() => setIsDeleteWorkoutDialogOpen(true)}
                   colorScheme="red"
                 >
                   Delete...
