@@ -5,12 +5,14 @@ import {
   getWorkoutTemplateSetsPerMuscleGroup,
   getWorkoutTemplateTotalSets,
   getCompletedWorkoutSetsPerMuscleGroup,
-  getWorkoutTemplateTotalVolume
+  getWorkoutTemplateTotalVolume,
+  getWeeklySetsPerMuscle
 } from "../controllers/stats.controller.js";
 
 const router = express.Router();
 
 router.get("/weekly-volume", protectRoute, getWeeklyVolumePerMuscle);
+router.get("/weekly-sets", protectRoute, getWeeklySetsPerMuscle)
 router.get(
   "/completed-workout-sets-per-muscle-group/:id",
   protectRoute,

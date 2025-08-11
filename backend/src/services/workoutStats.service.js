@@ -3,8 +3,10 @@ import Workout from "../models/workout.model.js";
 import mongoose from "mongoose";
 import { startOfWeek } from "date-fns";
 
-//{ Shoulders: 3, Triceps: 4.5 }
-export const getMuscleGroupVolumeForWorkout = async (workout) => {
+/*Get the trained muscle group sets for a given workout
+  { Shoulders: 3, Triceps: 4.5 } 
+*/
+export const getMuscleGroupSetsForWorkout = async (workout) => {
   try {
     if (!workout)
       throw new Error(
@@ -39,6 +41,7 @@ export const getMuscleGroupVolumeForWorkout = async (workout) => {
     throw error;
   }
 };
+
 //Total sets in a workout
 export const getTotalSets = async (workout) => {
   try {
@@ -65,7 +68,7 @@ export const getTotalSets = async (workout) => {
   }
 };
 
-// Total Volume of all exercises combined (Reps * Sets * Weight)
+// Total Volume of all exercises combined in a specific workout
 export const getTotalVolume = async (workout) => {
   try {
     if (!workout)
@@ -94,7 +97,17 @@ export const getTotalVolume = async (workout) => {
   }
 };
 
-//How much volume (reps*sets*weight) was performed per muscle group a given week
+/*How much volume (reps*sets*weight) was performed per muscle group a given week,
+"2025-07-14": {
+    "Chest": 2500,
+    "Triceps": 1300,
+    "Back": 3600,
+    "Shoulders": 900
+  },
+  "2025-07-07": {
+    "Legs": 4000
+  }
+    */
 export const getWeeklyMuscleGroupVolume = async (userId) => {
   try {
     //Finds the workouts the user has completed
@@ -158,53 +171,68 @@ export const getWeeklyMuscleGroupVolume = async (userId) => {
     }
 
     return weeklyVolume;
-    /*{
-  "2025-07-14": {
-    "Chest": 2500,
-    "Triceps": 1300,
-    "Back": 3600,
-    "Shoulders": 900
-  },
-  "2025-07-07": {
-    "Legs": 4000
-  }
-} */
   } catch (error) {
     console.error("Error in getWeeklyMuscleGroupVolume:", error.message);
     throw error;
   }
 };
-/*
-Get the weekly stats for each muscle group for a user
-Something like this:
-{
-  "2025-07-14": {
-    "Chest": {
-      "Volume": 2500,
-      "Sets": 15,
-      "Reps": 130,
-    "Triceps": 1300,
-    "Back": 3600,
-    "Shoulders": 900
-  },
-  "2025-07-07": {
-    "Legs": 4000
-  }
-}
- */
-export const getWeeklyMuscleGroupSummary = async (userId) => {
-  try{
-    const workouts = await CompletedWorkout.find({ user: userId })
+
+export const getWeeklyMuscleGroupSets = async (userId) => {
+  try {
+    const workouts = await CompletedWorkout.find( {user: userId})
     .populate("exercises.exercise")
+    .exec()
+    
+    const weeklyMuscleGroupSets = {}
 
-    const weeklySummary = {}
+    for(const workout of workouts){
+      if (!workout.completedAt) continue;
 
-    for( const workout of workouts) {
-      if(!workout.completedAt) contiune
+      const weekStart = startOfWeek(new Date(workout.completedAt), {
+        weekStartsOn: 1,
+      });
+       const weekKey = weekStart.toISOString().split("T")[0]
+
+      for( const ex of workout.exercises){
+        const exercise = ex.exercise
+        const setsCount = Array.isArray(ex.sets) ? ex.sets.length : Number(ex.sets) || 0;
+        if (!setsCount) continue;
+
+        if(!weeklyMuscleGroupSets[weekKey]){
+          weeklyMuscleGroupSets[weekKey] = {}
+        }
+        
+        if(exercise.primaryMuscleGroup){
+          const muscle = exercise.primaryMuscleGroup
+          weeklyMuscleGroupSets[weekKey][muscle] =  
+          (weeklyMuscleGroupSets[weekKey][muscle] || 0) + setsCount * 1
+        }
+        if(exercise.secondaryMuscleGroup){
+          const muscle = exercise.secondaryMuscleGroup
+          weeklyMuscleGroupSets[weekKey][muscle] =  
+          (weeklyMuscleGroupSets[weekKey][muscle] || 0) + setsCount * 0.5 
+        }
+      }
     }
 
-  }catch(error){
-    console.error("Error in getWeeklyMuscleGroupSummary:", error.message);
+    return weeklyMuscleGroupSets
+    /*Should be something like:
+    "2025-07-14": {
+      "Chest": 4,
+      "Back": 6,
+      }
+    }
+     */
+  } catch (error) {
+    console.error("Error in getWeeklyMuscleGroupVolume:", error.message);
     throw error;
   }
-}
+};
+
+export const getWeeklyWorkoutsCompleted = async (userId) => {
+  try {
+  } catch (error) {
+    console.error("Error in getWeeklyMuscleGroupVolume:", error.message);
+    throw error;
+  }
+};

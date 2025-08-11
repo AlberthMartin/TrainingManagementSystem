@@ -2,9 +2,10 @@ import CompletedWorkout from "../models/completedWorkout.model.js";
 import Workout from "../models/workout.model.js";
 import {
   getWeeklyMuscleGroupVolume,
-  getMuscleGroupVolumeForWorkout,
+  getMuscleGroupSetsForWorkout,
   getTotalSets,
   getTotalVolume,
+  getWeeklyMuscleGroupSets
 } from "../services/workoutStats.service.js";
 
 //How much volume (reps*sets*weight) was performed per muscle group a given week
@@ -17,11 +18,22 @@ export const getWeeklyVolumePerMuscle = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+export const getWeeklySetsPerMuscle = async (req, res) => {
+  try {
+    const data = await getWeeklyMuscleGroupSets(req.user._id);
+    res.json({ success: true, data: data });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 //{ Shoulders: 3, Triceps: 4.5 } (Workout Template)
 export const getWorkoutTemplateSetsPerMuscleGroup = async (req, res) => {
   try {
     const workout = await Workout.findById(req.params.id);
-    const data = await getMuscleGroupVolumeForWorkout(workout);
+    const data = await getMuscleGroupSetsForWorkout(workout);
     res.json({ success: true, data: data });
   } catch (err) {
     console.error(err);
@@ -78,7 +90,7 @@ export const getCompletedWorkoutSetsPerMuscleGroup = async (req, res) => {
           message: "Workout not found (getCompletedWorkoutSetsPerMuscleGroup)",
         });
     }
-    const data = await getMuscleGroupVolumeForWorkout(workout);
+    const data = await getMuscleGroupSetsForWorkout(workout);
     res.json({ success: true, data: data });
   } catch (err) {
     console.error(err);
