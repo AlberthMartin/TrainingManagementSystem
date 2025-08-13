@@ -64,7 +64,8 @@ A modern, full-featured training management system built using the **MERN stack*
 - Visualize your **weekly training volume** with interactive graphs  
   *(More detailed stats coming soon)*
 
-<img width="584" height="537" alt="Screenshot 2025-08-08 at 20 52 27" src="https://github.com/user-attachments/assets/555bb579-6788-4d23-9067-0c931559707b" />
+<img width="1114" height="790" alt="Screenshot 2025-08-13 at 18 29 26" src="https://github.com/user-attachments/assets/3765dd55-eea5-4e8b-8a80-d11259d85ae1" />
+
 
 ---
 
