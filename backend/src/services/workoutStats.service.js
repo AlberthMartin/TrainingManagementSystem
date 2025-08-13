@@ -1,7 +1,7 @@
 import CompletedWorkout from "../models/completedWorkout.model.js";
 import Workout from "../models/workout.model.js";
 import mongoose from "mongoose";
-import { startOfWeek } from "date-fns";
+import { startOfWeek, endOfWeek, isWithinInterval } from "date-fns";
 
 /*Get the trained muscle group sets for a given workout
   { Shoulders: 3, Triceps: 4.5 } 
@@ -117,13 +117,22 @@ export const getWeeklyMuscleGroupVolume = async (userId) => {
 
     const weeklyVolume = {};
 
+    const now = new Date();
+    const weekStart = startOfWeek(now, { weekStartsOn: 1 }); // Monday start
+    const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+
     //For each workout
     for (const workout of workouts) {
       if (!workout.completedAt) continue;
       //Gets the week start for a given date if the week starts on monday
-      const weekStart = startOfWeek(new Date(workout.completedAt), {
-        weekStartsOn: 1,
-      }); //Monday
+     if (
+        !isWithinInterval(new Date(workout.completedAt), {
+          start: weekStart,
+          end: weekEnd,
+        })
+      ) {
+        continue;
+      }
 
       //For each exercise in the workout
       for (const ex of workout.exercises) {
@@ -179,43 +188,55 @@ export const getWeeklyMuscleGroupVolume = async (userId) => {
 
 export const getWeeklyMuscleGroupSets = async (userId) => {
   try {
-    const workouts = await CompletedWorkout.find( {user: userId})
-    .populate("exercises.exercise")
-    .exec()
-    
-    const weeklyMuscleGroupSets = {}
+    const workouts = await CompletedWorkout.find({ user: userId })
+      .populate("exercises.exercise")
+      .exec();
 
-    for(const workout of workouts){
+    const weeklyMuscleGroupSets = {};
+
+    const now = new Date();
+    const weekStart = startOfWeek(now, { weekStartsOn: 1 }); // Monday start
+    const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+
+    for (const workout of workouts) {
       if (!workout.completedAt) continue;
 
-      const weekStart = startOfWeek(new Date(workout.completedAt), {
-        weekStartsOn: 1,
-      });
-       const weekKey = weekStart.toISOString().split("T")[0]
+      if (
+        !isWithinInterval(new Date(workout.completedAt), {
+          start: weekStart,
+          end: weekEnd,
+        })
+      ) {
+        continue;
+      }
 
-      for( const ex of workout.exercises){
-        const exercise = ex.exercise
-        const setsCount = Array.isArray(ex.sets) ? ex.sets.length : Number(ex.sets) || 0;
+      const weekKey = weekStart.toISOString().split("T")[0];
+
+      for (const ex of workout.exercises) {
+        const exercise = ex.exercise;
+        const setsCount = Array.isArray(ex.sets)
+          ? ex.sets.length
+          : Number(ex.sets) || 0;
         if (!setsCount) continue;
 
-        if(!weeklyMuscleGroupSets[weekKey]){
-          weeklyMuscleGroupSets[weekKey] = {}
+        if (!weeklyMuscleGroupSets[weekKey]) {
+          weeklyMuscleGroupSets[weekKey] = {};
         }
-        
-        if(exercise.primaryMuscleGroup){
-          const muscle = exercise.primaryMuscleGroup
-          weeklyMuscleGroupSets[weekKey][muscle] =  
-          (weeklyMuscleGroupSets[weekKey][muscle] || 0) + setsCount * 1
+
+        if (exercise.primaryMuscleGroup) {
+          const muscle = exercise.primaryMuscleGroup;
+          weeklyMuscleGroupSets[weekKey][muscle] =
+            (weeklyMuscleGroupSets[weekKey][muscle] || 0) + setsCount * 1;
         }
-        if(exercise.secondaryMuscleGroup){
-          const muscle = exercise.secondaryMuscleGroup
-          weeklyMuscleGroupSets[weekKey][muscle] =  
-          (weeklyMuscleGroupSets[weekKey][muscle] || 0) + setsCount * 0.5 
+        if (exercise.secondaryMuscleGroup) {
+          const muscle = exercise.secondaryMuscleGroup;
+          weeklyMuscleGroupSets[weekKey][muscle] =
+            (weeklyMuscleGroupSets[weekKey][muscle] || 0) + setsCount * 0.5;
         }
       }
     }
 
-    return weeklyMuscleGroupSets
+    return weeklyMuscleGroupSets;
     /*Should be something like:
     "2025-07-14": {
       "Chest": 4,

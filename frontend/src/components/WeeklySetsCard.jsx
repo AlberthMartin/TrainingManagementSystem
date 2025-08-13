@@ -29,19 +29,19 @@ export default function WeeklySetsCard() {
   });
 
   return (
-    <CardGrid>
-      <Card.Root width="400px">
-        <Card.Body gap="2">
-          <Card.Title>Sets This Week</Card.Title>
-          <BarList.Root chart={chart}>
-            <BarList.Content>
-              <BarList.Bar />
-              <BarList.Value />
-            </BarList.Content>
-          </BarList.Root>
-        </Card.Body>
-        <Card.Footer justifyContent="flex-end"></Card.Footer>
-      </Card.Root>
-    </CardGrid>
+    <Box w="full" position="relative">
+        <Card.Root w="full" h="100%">
+          <Card.Body gap="2">
+            <Card.Title mb="2" fontWeight="bold">Sets This Week</Card.Title>
+            <BarList.Root chart={chart}>
+              <BarList.Content>
+                <BarList.Bar />
+                <BarList.Value />
+              </BarList.Content>
+            </BarList.Root>
+          </Card.Body>
+          <Card.Footer justifyContent="flex-end"></Card.Footer>
+        </Card.Root>
+    </Box>
   );
 }

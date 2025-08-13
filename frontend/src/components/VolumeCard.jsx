@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Card, Flex,Box } from "@chakra-ui/react";
+import { Button, Card, Flex, Box } from "@chakra-ui/react";
 import { BarList, Chart, useChart } from "@chakra-ui/charts";
 import { useStatsStore } from "@/store/statsStore";
 import CardGrid from "./CardGrid";
@@ -32,19 +32,21 @@ export default function VolumeCard() {
   });
 
   return (
-    <CardGrid>
-    <Card.Root width="400px">
-      <Card.Body gap="2">
-        <Card.Title>Volume This Week</Card.Title>
-        <BarList.Root chart={chart}>
-          <BarList.Content>
-            <BarList.Bar />
-            <BarList.Value />
-          </BarList.Content>
-        </BarList.Root>
-      </Card.Body>
-      <Card.Footer justifyContent="flex-end"></Card.Footer>
-    </Card.Root>
-    </CardGrid>
+    <Box w="full" position="relative">
+      
+        <Card.Root w="full" h="100%">
+          <Card.Body gap="2">
+            <Card.Title mb="2" fontWeight="bold">Volume This Week</Card.Title>
+            <BarList.Root chart={chart}>
+              <BarList.Content>
+                <BarList.Bar />
+                <BarList.Value valueFormatter={(value) => `${value.toLocaleString()} kg`}/>
+              </BarList.Content>
+            </BarList.Root>
+          </Card.Body>
+          <Card.Footer justifyContent="flex-end"></Card.Footer>
+        </Card.Root>
+      
+    </Box>
   );
 }
