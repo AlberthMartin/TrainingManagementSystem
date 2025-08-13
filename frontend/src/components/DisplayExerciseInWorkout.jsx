@@ -1,6 +1,6 @@
 import React from "react";
 import { VStack, Text, HStack, Table, Input, Button, Menu, Portal } from "@chakra-ui/react";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, X } from "lucide-react";
 
 export default function DisplayExerciseInWorkout({
   name,
@@ -103,6 +103,15 @@ export default function DisplayExerciseInWorkout({
                   size="xs"
                   variant="ghost"
                   onClick={() => onRemoveSet(exerciseId, i)}
+                  colorPalette="red"
+                >
+                  <X />
+                </Button>
+              </Table.Cell>
+              <Table.Cell>
+                <Button
+                  size="xs"
+                  variant="ghost"
                 >
                   Remove
                 </Button>
