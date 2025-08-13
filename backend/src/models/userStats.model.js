@@ -1,13 +1,27 @@
 import mongoose from "mongoose";
 
-const userStats = new mongoose.Schema({
+const userStatsSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     default: null,
   },
 
-  VolumePerWeek: {},
-  SetsPerWeek: {},
-  lastUpdated: {}
+  volumePerWeek: {
+    type: Map,
+    of: Number,
+    default: {},
+  },
+  setsPerWeek: {
+    type: Map,
+    of: Number,
+    default: {},
+  },
+  lastUpdated: {},
+},
+{
+  timestamps: true,
 });
+
+const UserStats = mongoose.model("UserStat", userStatsSchema )
+export default UserStats
