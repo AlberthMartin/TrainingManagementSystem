@@ -71,7 +71,8 @@ A modern, full-featured training management system built using the **MERN stack*
 
  ### Exercises Management
 - Browse and manage your custom **exercise database**  
-<img width="732" height="792" alt="Screenshot 2025-08-07 at 19 56 04" src="https://github.com/user-attachments/assets/7c4198ca-7425-4e75-a0f3-be95a5ff0c42" />
+<img width="823" height="787" alt="Screenshot 2025-08-13 at 18 38 03" src="https://github.com/user-attachments/assets/7feb89ae-a34a-4796-9239-71bada61abb7" />
+
 
 - **Create new exercises** to use in your workouts  
 <img width="444" height="450" alt="Screenshot 2025-08-07 at 19 56 31" src="https://github.com/user-attachments/assets/29421134-4607-4bd9-8799-1bf44dc2a6cc" />
