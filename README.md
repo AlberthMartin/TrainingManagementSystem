@@ -4,7 +4,7 @@ A modern, full-featured training management system built using the **MERN stack*
 **MongoDB**, **Express**, **React**, and **Node.js** — with **Chakra UI** for elegant design and **JWT authentication** for secure user login and session management.
 
 ---
-
+##Video Demo: https://youtu.be/xExpPqn2YX4
 
 ## Features
 
