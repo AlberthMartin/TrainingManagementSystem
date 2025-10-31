@@ -33,7 +33,7 @@ https://youtu.be/xExpPqn2YX4
 
 ---
 
-###Workout Details
+### Workout Details
 - Click on any workout to **view all its details**  
 <img width="662" height="571" alt="Screenshot 2025-08-07 at 19 37 35" src="https://github.com/user-attachments/assets/25fde856-d20b-46e0-8377-62157d8d7ff5" />
 
