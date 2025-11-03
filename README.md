@@ -1,6 +1,8 @@
 #  Fullstack MERN training management system 
 
-A modern, full-featured training management system built using the **MERN stack** —  
+- Full-stack web app with authentication for managing personalized workouts, logging sessions, and tracking completed workouts and statistics.
+
+- Built using the **MERN stack** —  
 **MongoDB**, **Express**, **React**, and **Node.js** — with **Chakra UI** for elegant design and **JWT authentication** for secure user login and session management.
 
 ---
