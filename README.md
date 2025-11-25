@@ -37,9 +37,11 @@ The backend follows a clean, layered architecture commonly used in Node.js+ Expr
 
 
 
-
-
-
+### Frontend Architecture
+The frontend follows a modular architecture that separates UI components, page-level views, and application state management. This keeps the codebase organized, scalable, and easy to maintain.
+- **/components**: Contains reusable UI components, for example: Navbar, WorkoutForm, WorkoutCard, ActiveWorkoutBottomBar)
+- **/pages**: Contains the page level views, for example: LoginPage, ExercisesPage, CreateWorkoutPage, HistoryPage
+- **/store**: Contains the Global State Management, using Zustand, is responsible for communicating with the backend REST API, authentication tokens, active workouts.
 
 
 ### Setup Instructions
