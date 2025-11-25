@@ -1,4 +1,4 @@
-import Workout from "../models/workout.model.js";
+import Workout from "../models/workout.js";
 import mongoose from "mongoose";
 import { getMuscleGroupSetsForWorkout, getTotalSets, getTotalVolume } from "../services/workoutStats.service.js";
 

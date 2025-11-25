@@ -17,6 +17,14 @@ const userStatsSchema = new mongoose.Schema({
     of: Number,
     default: {},
   },
+  workoutsPerWeek: {
+    type: Map,
+    of: Number,
+  },
+  totalWorkouts: {
+    type: Number,
+
+  },
   lastUpdated: {},
 },
 {

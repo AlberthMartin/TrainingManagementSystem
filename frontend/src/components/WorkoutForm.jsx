@@ -181,6 +181,8 @@ export default function WorkoutForm({ workoutId, mode = "create" }) {
   };
 
   const handleCancelActiveWorkout = async () => {
+    
+
     clearActiveWorkout();
     navigate("/home");
   };

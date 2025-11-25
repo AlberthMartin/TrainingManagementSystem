@@ -1,5 +1,15 @@
 import React from "react";
-import { VStack, Text, HStack, Table, Input, Button, Menu, Portal } from "@chakra-ui/react";
+import {
+  VStack,
+  Text,
+  HStack,
+  Table,
+  Input,
+  Button,
+  Menu,
+  Portal,
+  Checkbox,
+} from "@chakra-ui/react";
 import { EllipsisVertical, X } from "lucide-react";
 
 export default function DisplayExerciseInWorkout({
@@ -55,6 +65,7 @@ export default function DisplayExerciseInWorkout({
             )}
           </Table.Row>
         </Table.Header>
+        {/*The sets of the Exercise */}
         <Table.Body>
           {sets.map((set, i) => (
             <Table.Row key={i}>
@@ -106,14 +117,6 @@ export default function DisplayExerciseInWorkout({
                   colorPalette="red"
                 >
                   <X />
-                </Button>
-              </Table.Cell>
-              <Table.Cell>
-                <Button
-                  size="xs"
-                  variant="ghost"
-                >
-                  Remove
                 </Button>
               </Table.Cell>
             </Table.Row>

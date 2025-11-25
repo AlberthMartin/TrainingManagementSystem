@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Card, Flex, Box } from "@chakra-ui/react";
 import { BarList, Chart, useChart } from "@chakra-ui/charts";
-import { useStatsStore } from "@/store/statsStore";
+import { useStatsStore } from "@/store/stats";
 import CardGrid from "./CardGrid";
 
 export default function WeeklySetsCard() {

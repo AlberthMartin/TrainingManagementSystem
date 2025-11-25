@@ -1,5 +1,5 @@
-import CompletedWorkout from "../models/completedWorkout.model.js";
-import Workout from "../models/workout.model.js";
+import CompletedWorkout from "../models/completedWorkout.js";
+import Workout from "../models/workout.js";
 import {
   getWeeklyMuscleGroupVolume,
   getMuscleGroupSetsForWorkout,

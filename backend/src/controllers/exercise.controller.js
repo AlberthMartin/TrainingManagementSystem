@@ -1,7 +1,7 @@
-import Exercise from "../models/models.exercise.js"
+import Exercise from "../models/exercise.js"
 import mongoose from "mongoose"
 
-/*Backend API for exercise.model
+/*Backend Controller for exercise.model
 Exercise Controller made to manage the MONGODB database of exercises
  getExercises --> get all the exercises stored in the database
  createExercise --> Create a new exercise in the database
